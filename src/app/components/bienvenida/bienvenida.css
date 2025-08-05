@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #e9f5e9;
+}
+
+.container {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.titulo {
+  color: #006400;
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+  color: #228B22;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.descripcion {
+  font-size: 18px;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  color: #333;
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+  margin-top: 20px;
+}
