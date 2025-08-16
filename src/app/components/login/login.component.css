@@ -1,0 +1,53 @@
+/* Centrar el wrapper en la pantalla */
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f8f9fa; /* gris claro */
+}
+
+/* Contenedor del formulario */
+.body {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 380px;
+  text-align: center;
+}
+
+/* Logo */
+.logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* Botón principal */
+.btn-lg {
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* Enlace de registro */
+p {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+p a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+p a:hover {
+  text-decoration: underline;
+}

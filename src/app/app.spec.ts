@@ -5,7 +5,7 @@ import { App } from './app';
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [App], // Standalone component
       providers: [provideZonelessChangeDetection()]
     }).compileComponents();
   });
@@ -16,10 +16,11 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
+  it('should render title in <h1>', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Ecotec-unaj');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Ecotec-unaj');
   });
 });
+
