@@ -1,11 +1,12 @@
-// src/app/app.config.ts
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection, importProvidersFrom } from '@angular/core';
+// ===== app.config.ts - CONFIGURACIÓN COMPLETA CON ZONE.JS =====
+// app.config.ts
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { provideClientHydration } from '@angular/platform-browser';
 import { routes } from './app.routes';
 
 // HTTP e interceptores
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withFetch } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AddTokenInterceptor } from './utils/add-token.interceptor';
 
@@ -18,25 +19,40 @@ import { ToastrModule } from 'ngx-toastr';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideZonelessChangeDetection(),
+    // ✅ Zone.js se usa automáticamente (NO agregar provideZonelessChangeDetection)
+    
+    // Routing
     provideRouter(routes),
-    provideClientHydration(withEventReplay()),
-
-    // 🚀 Nuevo: HTTP + Interceptor
-    provideHttpClient(withInterceptorsFromDi()),
-    { provide: HTTP_INTERCEPTORS, useClass: AddTokenInterceptor, multi: true },
-
-    // 🚀 Nuevo: Formularios y animaciones
+    
+    // HTTP Client
+    provideHttpClient(
+      withFetch(),
+      withInterceptorsFromDi()
+    ),
+    
+    // Interceptor para tokens
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AddTokenInterceptor,
+      multi: true
+    },
+    
+    // Client Hydration (opcional)
+    provideClientHydration(),
+    
+    // Animaciones (necesario para Toastr)
     provideAnimations(),
+    
+    // Módulos importados
     importProvidersFrom(
       FormsModule,
       ToastrModule.forRoot({
         timeOut: 4000,
         positionClass: 'toast-bottom-right',
         preventDuplicates: true,
+        closeButton: true,
+        progressBar: true
       })
     )
   ]
 };
-provideRouter(routes)

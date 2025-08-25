@@ -1,0 +1,288 @@
+.dashboard-container {
+  margin-top: 64px; /* Altura del navbar */
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  background-color: #f5f5f5;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 0 8px;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 400;
+  color: #202124;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.header-actions button[mat-raised-button] {
+  margin-right: 16px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 16px;
+  color: #5f6368;
+}
+
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.class-card {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.class-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.card-header {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+}
+
+.class-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+}
+
+.card-overlay {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.card-menu-button {
+  color: white;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.card-menu-button:hover {
+  background-color: rgba(0,0,0,0.5);
+}
+
+.card-content {
+  padding: 20px !important;
+}
+
+.class-info {
+  margin-bottom: 16px;
+}
+
+.class-name {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  color: #202124;
+  line-height: 1.2;
+}
+
+.class-teacher {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.class-description {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.class-stats {
+  margin-top: 16px;
+}
+
+.stats-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stat-chip {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  height: 28px;
+  background-color: #e8f0fe !important;
+  color: #1976d2 !important;
+}
+
+.chip-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.card-actions {
+  padding: 8px 16px 16px !important;
+  gap: 8px;
+}
+
+.card-actions button {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Nueva clase card */
+.new-class-card {
+  cursor: pointer;
+  border: 2px dashed #dadce0;
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+}
+
+.new-class-card:hover {
+  border-color: #1976d2;
+  background-color: #f8f9fa;
+}
+
+.new-class-content {
+  text-align: center;
+  padding: 24px;
+}
+
+.new-class-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: #5f6368;
+  margin-bottom: 16px;
+}
+
+.new-class-content h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  color: #202124;
+}
+
+.new-class-content p {
+  font-size: 14px;
+  color: #5f6368;
+  margin: 0 0 20px 0;
+}
+
+.new-class-button {
+  font-weight: 500;
+}
+
+/* Sección de productos */
+.products-section {
+  margin-top: 48px;
+}
+
+.section-divider {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 24px;
+  font-weight: 400;
+  color: #202124;
+  margin-bottom: 24px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.product-card {
+  transition: all 0.2s ease-in-out;
+  border-radius: 8px;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .sedes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 16px;
+  }
+  
+  .dashboard-header {
+    margin-bottom: 24px;
+  }
+  
+  .dashboard-title {
+    font-size: 28px;
+  }
+  
+  .sedes-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .sede-card {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 12px;
+  }
+  
+  .dashboard-title {
+    font-size: 24px;
+  }
+  
+  .card-content {
+    padding: 16px !important;
+  }
+  
+  .sede-name {
+    font-size: 18px;
+  }
+}

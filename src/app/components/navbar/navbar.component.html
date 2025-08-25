@@ -1,7 +1,71 @@
-<nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Angular Node JWT</a>
-      <button class="btn btn-outline-success" (click)="logOut()" type="button">LogOut</button>
-
+<mat-toolbar color="primary" class="navbar">
+  <div class="navbar-content">
+    <!-- Logo y título -->
+    <div class="navbar-left">
+      <button mat-icon-button class="menu-button">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="logo-container">
+        <mat-icon class="logo-icon">eco</mat-icon>
+        <span class="app-title">EcoReport</span>
+      </div>
     </div>
-  </nav>
+
+    <!-- Barra de búsqueda (opcional) -->
+    <div class="navbar-center">
+      <div class="search-container">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input 
+          type="text" 
+          placeholder="Buscar reportes o sedes" 
+          class="search-input"
+        >
+      </div>
+    </div>
+
+    <!-- Iconos de la derecha -->
+    <div class="navbar-right">
+      <!-- Notificaciones -->
+      <button mat-icon-button>
+        <mat-icon matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+      </button>
+
+      <!-- Apps -->
+      <button mat-icon-button>
+        <mat-icon>apps</mat-icon>
+      </button>
+
+      <!-- Avatar del usuario con menú -->
+      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-avatar">
+        <div class="avatar-circle">
+          {{ userInitial }}
+        </div>
+      </button>
+
+      <!-- Menú del usuario -->
+      <mat-menu #userMenu="matMenu" xPosition="before">
+        <div class="user-info-menu">
+          <div class="user-avatar-large">{{ userInitial }}</div>
+          <div class="user-details">
+            <div class="user-name">{{ userName }}</div>
+            <div class="user-email">juan.doe@example.com</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="goToProfile()">
+          <mat-icon>person</mat-icon>
+          <span>Mi perfil</span>
+        </button>
+        <button mat-menu-item (click)="goToSettings()">
+          <mat-icon>settings</mat-icon>
+          <span>Configuración</span>
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logOut()">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>

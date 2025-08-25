@@ -7,20 +7,24 @@ import { Observable } from 'rxjs';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private router: Router) {
+  constructor(private router: Router) {}
 
-  }
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    const token = localStorage.getItem('token')
-    if(token == undefined) {
-      this.router.navigate(['/login'])
-      return false
+    // 👇 Esto evita el error en SSR
+    if (typeof window === 'undefined') {
+      return false;
     }
-    
-     return true;
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return false;
+    }
+
+    return true;
   }
-  
 }
