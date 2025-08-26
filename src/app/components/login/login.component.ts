@@ -1,10 +1,12 @@
+// login.component.ts
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { User } from '../../interfaces/user';
 import { ErrorService } from '../../services/error.service';
 import { UserService } from '../../services/user.service';
+import { ParticlesService } from '../../services/particles.service'; // Nuevo servicio
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
@@ -16,7 +18,7 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   username: string = '';
   password: string = '';
   loading: boolean = false;
@@ -25,8 +27,69 @@ export class LoginComponent {
     private toastr: ToastrService,
     private _userService: UserService,
     private router: Router,
-    private _errorService: ErrorService
+    private _errorService: ErrorService,
+    private particlesService: ParticlesService // Inyectar el servicio
   ) {}
+
+  async ngOnInit() {
+    console.log('Iniciando componente login...');
+  }
+
+  async ngAfterViewInit() {
+    // Esperamos a que el DOM esté listo
+    setTimeout(async () => {
+      await this.initializeParticles();
+    }, 100);
+  }
+
+  ngOnDestroy() {
+    this.particlesService.destroyParticles();
+  }
+
+ private async initializeParticles() {
+    try {
+      const isSmallScreen = window.innerWidth <= 1024;
+      
+      // Inicializar el engine de partículas
+      await this.particlesService.initializeParticlesEngine();
+      
+      if (isSmallScreen) {
+        // MÓVIL: Polígono centrado donde está el logo (reemplaza la imagen)
+        const position = { x: 50, y: 12 }; // Centrado arriba
+        const scale = 0.6;
+        
+        await this.particlesService.loadPolygonParticles(
+          'tsparticles-login-bg',
+          'icons/unajlogo.svg',
+          position,
+          scale,
+          true // useAbsolutePositioning
+        );
+      } else {
+        // DESKTOP: Polígono al lado derecho del login (imagen permanece)
+        const position = { x: 55, y: 30 }; // Lado derecho, centrado verticalmente
+        const scale = 1.2;
+        
+        await this.particlesService.loadPolygonParticles(
+          'tsparticles-login-bg',
+          'icons/unajlogo.svg',
+          position,
+          scale,
+          true // fullScreen para fondo completo
+        );
+      }
+      
+    } catch (error) {
+      console.error('Error al inicializar partículas:', error);
+    }
+  }
+  // Manejar redimensionamiento de ventana
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    setTimeout(() => {
+      this.initializeParticles();
+    }, 100);
+  }
 
   login() {
     if (this.username.trim() === '' || this.password.trim() === '') {
