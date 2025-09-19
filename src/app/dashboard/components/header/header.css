@@ -1,0 +1,100 @@
+.header {
+  background-color: var(--unaj-blue-dark);
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.header-left .material-icons {
+  cursor: pointer;
+  color: var(--white);
+}
+
+.header-center .header-dot {
+  /* Añade un punto decorativo */
+}
+
+.header-right .profile-icon-header {
+  font-size: 30px;
+  color: var(--white);
+  cursor: pointer;
+}
+
+/* Estilos del pop-up del perfil */
+.profile-popup {
+  position: absolute;
+  top: 60px;
+  right: 15px;
+  background-color: var(--unaj-blue-dark);
+  color: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 200px;
+  padding: 10px;
+  z-index: 20;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.popup-profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.close-icon {
+  cursor: pointer;
+}
+
+.profile-info {
+  text-align: left;
+}
+
+.profile-info p {
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+.profile-options {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.profile-options:hover {
+  background-color: var(--unaj-blue-light);
+}
+
+.profile-icon {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.profile-link, .logout-link a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* Nuevo estilo para el ícono de perfil en el pop-up */
+.popup-profile-icon {
+  font-size: 50px; /* Mismo tamaño que la imagen anterior */
+  color: var(--white); /* Color del ícono para que sea visible */
+}
+
+/* Puedes eliminar o ajustar este estilo si ya no usas la imagen */
+.popup-profile-pic {
+  display: none; /* Ocultamos la imagen */
+}

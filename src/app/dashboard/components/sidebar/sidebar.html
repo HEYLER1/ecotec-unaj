@@ -1,0 +1,12 @@
+<aside class="sidebar" [class.visible]="(sidebarVisible$ | async)">
+  <div class="sidebar-header">
+    <span class="material-icons close-icon" (click)="closeSidebar()">close</span>
+  </div>
+  <nav class="sidebar-nav">
+    <ul>
+      <li><a href="#" class="active" (click)="closeSidebar()">INICIO</a></li>
+      <li><a href="#" (click)="closeSidebar()">RECIENTES</a></li>
+      <li><a href="#" (click)="closeSidebar()">DATOS</a></li>
+    </ul>
+  </nav>
+</aside>

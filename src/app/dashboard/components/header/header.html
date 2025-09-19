@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="header-left">
+    <span class="material-icons" (click)="toggleSidebar()">menu</span>
+  </div>
+  <div class="header-center">
+    <div class="header-dot"></div>
+  </div>
+  <div class="header-right">
+    <span class="material-icons profile-icon-header" (click)="toggleProfileMenu()">person</span>
+  </div>
+
+  <div class="profile-popup" *ngIf="showProfileMenu">
+    <div class="profile-header">
+      <span class="material-icons popup-profile-icon">person</span>
+      <span class="close-icon" (click)="toggleProfileMenu()">close</span>
+    </div>
+    <div class="profile-info">
+      <p>NOMBRES APELLIDOS</p>
+      <div class="profile-options">
+        <span class="material-icons profile-icon">person</span>
+        <span class="profile-link">Ver Perfil</span>
+      </div>
+      <div class="profile-options logout-link">
+        <span class="material-icons profile-icon">logout</span>
+        <a href="#">Cerrar Sesión</a>
+      </div>
+    </div>
+  </div>
+</header>

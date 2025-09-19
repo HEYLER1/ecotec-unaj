@@ -1,0 +1,25 @@
+<div class="main-container">
+  <div class="overlay" (click)="closeSidebar()" [class.visible]="(sidebarVisible$ | async)"></div>
+  <app-sidebar></app-sidebar>
+  <div class="content-wrapper">
+    <app-header></app-header>
+    <main class="campus-list">
+      <app-campus-card
+        campusImage="imagess/capillaadmin.jpg"
+        campusName="SEDE CAPILLA - ADMINISTRATIVO"
+      ></app-campus-card>
+      <app-campus-card
+        campusImage="imagess/ayabacas.jpg"
+        campusName="SEDE AYABACAS"
+      ></app-campus-card>
+      <app-campus-card
+        campusImage="imagess/capillaeducativa.png"
+        campusName="SEDE CAPILLA - ACADÉMICO"
+      ></app-campus-card>
+      <app-campus-card
+        campusImage="imagess/santacatalina.jpg"
+        campusName="SEDE SANTA CATALINA"
+      ></app-campus-card>
+    </main>
+  </div>
+</div>

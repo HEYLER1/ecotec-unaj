@@ -1,34 +1,12 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './utils/auth.guard';
+import { LoginComponent } from './components/login/login.component';
 
 export const routes: Routes = [
-  // Redirección por defecto
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  
-  // Rutas públicas con lazy loading de componentes standalone
-  {
-    path: 'login',
-    loadComponent: () => import('./components/login/login.component').then(c => c.LoginComponent)
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { 
+    path: 'dashboard', 
+    loadComponent: () => import('./dashboard/components/main-view/main-view').then(c => c.MainView) 
   },
-  {
-    path: 'signIn',
-    loadComponent: () => import('./components/sign-in/sign-in.component').then(c => c.SignInComponent)
-  },
-
-  // Rutas protegidas del admin
-  {
-    path: 'admin',
-    loadComponent: () => import('./components/dashboard/dashboard.component').then(c => c.DashboardComponent),
-    canActivate: [AuthGuard],
-    children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      {
-        path: 'dashboard',
-        loadComponent: () => import('./components/dashboard/dashboard.component').then(c => c.DashboardComponent) // 👈 corregido
-      },
-    ]
-  },
-  
-  // Ruta wildcard
-  { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: 'login' }
 ];
