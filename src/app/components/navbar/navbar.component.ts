@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
+import { SidebarComponent } from '../sidebar/sidebar'; // Importar el sidebar
 
 @Component({
   selector: 'app-navbar',
@@ -18,32 +19,32 @@ import { MatDividerModule } from '@angular/material/divider';
     MatIconModule,
     MatMenuModule,
     MatBadgeModule,
-    MatDividerModule
+    MatDividerModule,
+    SidebarComponent // Agregar el sidebar a las importaciones
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  userInitial = 'JD'; // Puedes obtener esto del servicio de usuario
-  userName = 'Juan Doe'; // Puedes obtener esto del servicio de usuario
-
+  sidebarVisible = false;
+  
   constructor(private router: Router) {}
 
-  logOut() {
-    // Elimina el token del localStorage o sessionStorage
-    localStorage.removeItem('token');
-    
-    // Redirige al login
-    this.router.navigate(['/login']);
+  toggleSidebar(): void {
+    this.sidebarVisible = !this.sidebarVisible;
+    console.log('Toggle sidebar', this.sidebarVisible);
   }
 
-  goToProfile() {
-    // Navegar al perfil del usuario
+  closeSidebar(): void {
+    this.sidebarVisible = false;
+  }
+
+  viewProfile(): void {
     this.router.navigate(['/profile']);
   }
 
-  goToSettings() {
-    // Navegar a configuraciones
-    this.router.navigate(['/settings']);
+  logout(): void {
+    console.log('Logging out...');
+    this.router.navigate(['/login']);
   }
 }

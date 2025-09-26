@@ -1,126 +1,33 @@
-<app-navbar></app-navbar>
-
-<div class="dashboard-container">
-  <!-- Header del dashboard -->
-  <div class="dashboard-header">
-    <h1 class="dashboard-title">Panel de Gestión Ambiental</h1>
-    <div class="header-actions">
-      <button mat-raised-button color="primary">
-        <mat-icon>add_circle</mat-icon>
-        Nuevo Reporte
-      </button>
-      <button mat-icon-button>
-        <mat-icon>view_module</mat-icon>
-      </button>
-      <button mat-icon-button>
-        <mat-icon>list</mat-icon>
-      </button>
-    </div>
-  </div>
-
-  <!-- Loading state -->
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner diameter="40"></mat-spinner>
-    <p>Cargando sedes...</p>
-  </div>
-
-  <!-- Grid de sedes -->
-  <div *ngIf="!isLoading" class="sedes-grid">
-    <mat-card 
-      *ngFor="let sede of sedes" 
-      class="sede-card"
-      (click)="openSede(sede.id)"
-    >
-      <!-- Imagen de cabecera -->
-      <div class="card-header" [style.background-color]="sede.color">
-        <img [src]="sede.image" [alt]="sede.name" class="sede-image">
-        <div class="card-overlay">
-          <button 
-            mat-icon-button 
-            class="card-menu-button"
-            (click)="openSedeMenu($event, sede.id)"
-          >
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        </div>
-      </div>
-
-      <!-- Contenido de la tarjeta -->
-      <mat-card-content class="card-content">
-        <div class="sede-info">
-          <h3 class="sede-name">{{ sede.name }}</h3>
-          <p class="sede-location">
-            <mat-icon class="location-icon">location_on</mat-icon>
-            {{ sede.location }}
-          </p>
-          <p class="sede-description">{{ sede.description }}</p>
-        </div>
-
-        <!-- Stats de la sede -->
-        <div class="sede-stats">
-          <div class="stat-item urgent">
-            <mat-icon>warning</mat-icon>
-            <span class="stat-number">{{ sede.activeReports }}</span>
-            <span class="stat-label">Reportes Activos</span>
-          </div>
-          <div class="stat-item resolved">
-            <mat-icon>check_circle</mat-icon>
-            <span class="stat-number">{{ sede.resolvedReports }}</span>
-            <span class="stat-label">Resueltos</span>
-          </div>
-          <div class="stat-item time">
-            <mat-icon>schedule</mat-icon>
-            <span class="stat-label">Última actividad: {{ sede.lastActivity }}</span>
-          </div>
-        </div>
-      </mat-card-content>
-
-      <!-- Acciones de la tarjeta -->
-      <mat-card-actions class="card-actions">
-        <button mat-button color="primary">
-          <mat-icon>visibility</mat-icon>
-          Ver Reportes
-        </button>
-        <button mat-button color="warn" *ngIf="sede.activeReports > 0">
-          <mat-icon>report_problem</mat-icon>
-          Urgentes ({{ sede.activeReports }})
-        </button>
-      </mat-card-actions>
-    </mat-card>
-
-    <!-- Tarjeta para crear nuevo reporte -->
-    <mat-card class="sede-card new-report-card">
-      <div class="new-report-content">
-        <mat-icon class="new-report-icon">add_location</mat-icon>
-        <h3>Reportar Nuevo Desborde</h3>
-        <p>Crea un reporte de desborde de basura en cualquier sede</p>
-        <button mat-raised-button color="primary" class="new-report-button">
-          <mat-icon>add_circle</mat-icon>
-          Crear Reporte
-        </button>
-      </div>
-    </mat-card>
-  </div>
-
-  <!-- Sección de productos (tu contenido original) -->
-  <div *ngIf="!isLoading && listProduct.length > 0" class="products-section">
-    <mat-divider class="section-divider"></mat-divider>
-    <h2 class="section-title">Productos disponibles</h2>
-    
-    <div class="products-grid">
-      <mat-card *ngFor="let product of listProduct" class="product-card">
-        <mat-card-header>
-          <mat-card-title>{{ product.name }}</mat-card-title>
-          <mat-card-subtitle>Producto disponible</mat-card-subtitle>
-        </mat-card-header>
+<!-- dashboard.component.html -->
+<div class="main-container">
+  <div class="overlay" (click)="closeSidebar()" [class.visible]="(sidebarVisible$ | async)"></div>
+  <app-navbar></app-navbar>
+  <div class="content-wrapper">
+    <main class="campus-list">
+      
+      <!-- Campus Cards usando *ngFor para reutilización -->
+      <mat-card 
+        *ngFor="let campus of campusList; trackBy: trackByCampusId" 
+        class="campus-card" 
+        (click)="openSede(campus.id)">
+        
+        <img mat-card-image 
+             [src]="campus.image" 
+             [alt]="campus.name"
+             class="campus-image">
+        
         <mat-card-content>
-          <p>{{ product.description || 'Sin descripción disponible' }}</p>
+          <mat-card-title>{{ campus.name }}</mat-card-title>
         </mat-card-content>
+        
         <mat-card-actions>
-          <button mat-button color="primary">VER DETALLES</button>
-          <button mat-button>AGREGAR</button>
+          <button mat-raised-button color="primary" class="campus-button">
+            <mat-icon>add</mat-icon>
+            Ingresar datos
+          </button>
         </mat-card-actions>
       </mat-card>
-    </div>
+
+    </main>
   </div>
 </div>

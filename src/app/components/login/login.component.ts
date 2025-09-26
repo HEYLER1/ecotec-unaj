@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { User } from '../../interfaces/user';
 import { ErrorService } from '../../services/error.service';
 import { UserService } from '../../services/user.service';
-import { ParticlesService } from '../../services/particles.service'; // Nuevo servicio
+import { ParticlesService } from '../../services/particles.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
@@ -19,6 +19,7 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
+  // CORREGIDO: Cambiado 'email' por 'username' para coincidir con el HTML
   username: string = '';
   password: string = '';
   loading: boolean = false;
@@ -28,7 +29,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     private _userService: UserService,
     private router: Router,
     private _errorService: ErrorService,
-    private particlesService: ParticlesService // Inyectar el servicio
+    private particlesService: ParticlesService
   ) {}
 
   async ngOnInit() {
@@ -46,7 +47,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     this.particlesService.destroyParticles();
   }
 
- private async initializeParticles() {
+  private async initializeParticles() {
     try {
       const isSmallScreen = window.innerWidth <= 1024;
       
@@ -83,6 +84,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
       console.error('Error al inicializar partículas:', error);
     }
   }
+
   // Manejar redimensionamiento de ventana
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -92,13 +94,15 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   login() {
+    // Validación usando la propiedad username del componente
     if (this.username.trim() === '' || this.password.trim() === '') {
       this.toastr.error('Todos los campos son obligatorios', 'Error');
       return;
     }
 
+    // Mapeamos username a email para cumplir con la interfaz User
     const user: User = {
-      username: this.username,
+      email: this.username, // El username se mapea al campo email requerido por la interfaz
       password: this.password
     };
 

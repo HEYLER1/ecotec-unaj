@@ -1,0 +1,12 @@
+<aside class="sidebar" [class.visible]="isVisible">
+      <div class="sidebar-header">
+        <span class="material-icons close-icon" (click)="onCloseSidebar()">close</span>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="#" class="active" (click)="onCloseSidebar()">INICIO</a></li>
+          <li><a href="#" (click)="onCloseSidebar()">RECIENTES</a></li>
+          <li><a href="#" (click)="onCloseSidebar()">DATOS</a></li>
+        </ul>
+      </nav>
+</aside>

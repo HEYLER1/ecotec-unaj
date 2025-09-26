@@ -1,0 +1,10 @@
+export interface User {
+    username: string,
+    password: string
+}
+
+export interface information {
+    id: number,
+    name: string,
+    description: string
+}

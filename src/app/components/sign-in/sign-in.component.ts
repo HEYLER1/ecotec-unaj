@@ -19,7 +19,7 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
-  username = '';
+  email = '';
   password = '';
   confirmPassword = '';
   loading = false;
@@ -34,7 +34,7 @@ export class SignInComponent implements OnInit {
   ngOnInit(): void {}
 
   addUser() {
-    if (!this.username || !this.password || !this.confirmPassword) {
+    if (!this.email || !this.password || !this.confirmPassword) {
       this.toastr.error('Todos los campos son obligatorios', 'Error');
       return;
     }
@@ -44,13 +44,13 @@ export class SignInComponent implements OnInit {
       return;
     }
 
-    const user: User = { username: this.username, password: this.password };
+    const user: User = { email: this.email, password: this.password };
 
     this.loading = true;
     this._userService.signIn(user).subscribe({
       next: () => {
         this.loading = false;
-        this.toastr.success(`El usuario ${this.username} fue registrado con éxito`, 'Usuario registrado');
+        this.toastr.success(`El usuario ${this.email} fue registrado con éxito`, 'Usuario registrado');
         this.router.navigate(['/login']);
       },
       error: (e: HttpErrorResponse) => {

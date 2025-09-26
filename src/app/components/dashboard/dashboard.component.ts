@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../../interfaces/product';
-import { ProductService } from '../../services/product.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +10,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatBadgeModule } from '@angular/material/badge';
+import { BehaviorSubject } from 'rxjs';
+
+// Interfaz para el Campus
+interface Campus {
+  id: number;
+  name: string;
+  image: string;
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -33,80 +39,52 @@ import { MatBadgeModule } from '@angular/material/badge';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  listProduct: Product[] = [];
-  isLoading = true;
   
-  // Datos de las sedes para reportes ambientales
-  sedes = [
+  // Propiedad necesaria para el overlay del sidebar
+  sidebarVisible$ = new BehaviorSubject<boolean>(false);
+  
+  // Lista de campus reutilizable
+  campusList: Campus[] = [
     {
       id: 1,
-      name: 'Sede Capilla',
-      location: 'Capilla',
-      description: 'Monitoreo de desbordes de basura en zona urbana',
-      color: '#1976d2',
-      activeReports: 8,
-      resolvedReports: 24,
-      lastActivity: '2 horas',
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop'
+      name: 'SEDE CAPILLA - ADMINISTRATIVO',
+      image: 'images/sede.jpg'
     },
     {
       id: 2,
-      name: 'Sede Ayabacas',
-      location: 'Ayabacas',
-      description: 'Control ambiental en zona rural y periférica',
-      color: '#388e3c',
-      activeReports: 5,
-      resolvedReports: 18,
-      lastActivity: '4 horas',
-      image: 'https://images.unsplash.com/photo-1569163139394-de4e4f43e4e5?w=400&h=200&fit=crop'
+      name: 'SEDE AYABACAS',
+      image: 'images/sede.jpg'
     },
     {
       id: 3,
-      name: 'Sede Santa Catalina',
-      location: 'Santa Catalina',
-      description: 'Gestión de residuos en zona comercial y residencial',
-      color: '#f57c00',
-      activeReports: 12,
-      resolvedReports: 31,
-      lastActivity: '1 hora',
-      image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=400&h=200&fit=crop'
+      name: 'SEDE CAPILLA - ACADÉMICO',
+      image: 'images/sede.jpg'
     },
     {
       id: 4,
-      name: 'Sede Administrativa',
-      location: 'Centro Administrativo',
-      description: 'Coordinación general y reportes consolidados',
-      color: '#7b1fa2',
-      activeReports: 3,
-      resolvedReports: 45,
-      lastActivity: '30 min',
-      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=200&fit=crop'
+      name: 'SEDE SANTA CATALINA',
+      image: 'images/sede.jpg'
     }
   ];
-
-  constructor(private _productService: ProductService) {}
-
-  ngOnInit(): void {
-    this.getProducts();
-    // Simular carga
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1500);
-  }
-
-  getProducts() {
-    this._productService.getProducts().subscribe(data => {
-      this.listProduct = data;
-    });
+  
+  ngOnInit() {
+    // Inicialización del componente si es necesario
+    console.log('Dashboard inicializado con', this.campusList.length, 'campus');
   }
 
   openSede(sedeId: number) {
-    console.log('Abrir sede:', sedeId);
+    const campus = this.campusList.find(c => c.id === sedeId);
+    console.log('Abrir sede:', campus?.name);
     // Aquí puedes navegar a la página de la sede
   }
 
-  openSedeMenu(event: Event, sedeId: number) {
-    event.stopPropagation();
-    console.log('Menú de sede:', sedeId);
+  // Método necesario para cerrar el sidebar (usado en el overlay)
+  closeSidebar() {
+    this.sidebarVisible$.next(false);
+  }
+
+  // TrackBy function para optimizar el *ngFor
+  trackByCampusId(index: number, campus: Campus): number {
+    return campus.id;
   }
 }

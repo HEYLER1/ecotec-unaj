@@ -1,71 +1,57 @@
-<mat-toolbar color="primary" class="navbar">
-  <div class="navbar-content">
-    <!-- Logo y título -->
-    <div class="navbar-left">
-      <button mat-icon-button class="menu-button">
+<div class="navbar-container">
+  <mat-toolbar class="header">
+    <div class="header-left">
+      <button mat-icon-button (click)="toggleSidebar()">
         <mat-icon>menu</mat-icon>
       </button>
-      <div class="logo-container">
-        <mat-icon class="logo-icon">eco</mat-icon>
-        <span class="app-title">EcoReport</span>
-      </div>
     </div>
-
-    <!-- Barra de búsqueda (opcional) -->
-    <div class="navbar-center">
-      <div class="search-container">
-        <mat-icon class="search-icon">search</mat-icon>
-        <input 
-          type="text" 
-          placeholder="Buscar reportes o sedes" 
-          class="search-input"
-        >
-      </div>
+    
+    <div class="header-center">
+      <div class="header-dot"></div>
     </div>
-
-    <!-- Iconos de la derecha -->
-    <div class="navbar-right">
-      <!-- Notificaciones -->
-      <button mat-icon-button>
-        <mat-icon matBadge="3" matBadgeColor="warn" matBadgeSize="small">notifications</mat-icon>
+    
+    <div class="header-right">
+      <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+        <mat-icon>person</mat-icon>
       </button>
-
-      <!-- Apps -->
-      <button mat-icon-button>
-        <mat-icon>apps</mat-icon>
-      </button>
-
-      <!-- Avatar del usuario con menú -->
-      <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-avatar">
-        <div class="avatar-circle">
-          {{ userInitial }}
+      
+      <mat-menu #profileMenu="matMenu" class="profile-popup">
+        <div class="profile-header" mat-menu-item disabled>
+          <mat-icon class="popup-profile-icon">person</mat-icon>
+          <span class="profile-header-text">Perfil</span>
         </div>
-      </button>
-
-      <!-- Menú del usuario -->
-      <mat-menu #userMenu="matMenu" xPosition="before">
-        <div class="user-info-menu">
-          <div class="user-avatar-large">{{ userInitial }}</div>
-          <div class="user-details">
-            <div class="user-name">{{ userName }}</div>
-            <div class="user-email">juan.doe@example.com</div>
+        
+        <mat-divider></mat-divider>
+        
+        <div class="profile-info">
+          <div mat-menu-item disabled class="profile-name">
+            <span>NOMBRES APELLIDOS</span>
           </div>
+          
+          <button mat-menu-item class="profile-options" (click)="viewProfile()">
+            <mat-icon>person</mat-icon>
+            <span>Ver Perfil</span>
+          </button>
+          
+          <button mat-menu-item class="profile-options logout-link" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            <span>Cerrar Sesión</span>
+          </button>
         </div>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="goToProfile()">
-          <mat-icon>person</mat-icon>
-          <span>Mi perfil</span>
-        </button>
-        <button mat-menu-item (click)="goToSettings()">
-          <mat-icon>settings</mat-icon>
-          <span>Configuración</span>
-        </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logOut()">
-          <mat-icon>logout</mat-icon>
-          <span>Cerrar sesión</span>
-        </button>
       </mat-menu>
     </div>
+  </mat-toolbar>
+
+  <!-- Sidebar integrado -->
+  <app-sidebar 
+    [isVisible]="sidebarVisible" 
+    (closeSidebar)="closeSidebar()">
+  </app-sidebar>
+
+  <!-- Overlay para cerrar el sidebar -->
+  <div 
+    class="sidebar-overlay" 
+    [class.active]="sidebarVisible"
+    (click)="closeSidebar()">
   </div>
-</mat-toolbar>
+</div>
