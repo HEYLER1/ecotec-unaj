@@ -1,0 +1,24 @@
+<main class="campus-list">
+  
+  <mat-card 
+    *ngFor="let campus of campusList; trackBy: trackByCampusId" 
+    class="campus-card">
+    
+    <img mat-card-image 
+         [src]="campus.image" 
+         [alt]="campus.name"
+         class="campus-image">
+    
+    <mat-card-content>
+      <mat-card-title>{{ campus.name }}</mat-card-title>
+    </mat-card-content>
+    
+    <mat-card-actions>
+      <button mat-raised-button color="primary" class="campus-button" (click)="openSede(campus.id)">
+        <mat-icon>add</mat-icon>
+        Ingresar datos
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+</main>

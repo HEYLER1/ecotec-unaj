@@ -1,3 +1,5 @@
+// dashboard.component.ts (ACTUALIZADO)
+
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
@@ -11,18 +13,16 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatBadgeModule } from '@angular/material/badge';
 import { BehaviorSubject } from 'rxjs';
+import { Sede } from '../../interfaces/sede';  // <-- CAMBIO 1: Importamos tu nueva interfaz
 
-// Interfaz para el Campus
-interface Campus {
-  id: number;
-  name: string;
-  image: string;
-}
+// CAMBIO 2: Importamos el Router para la navegación
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
+    RouterModule, // <-- CAMBIO 3: Añadimos RouterModule a los imports
     NavbarComponent,
     CommonModule,
     MatCardModule,
@@ -40,11 +40,10 @@ interface Campus {
 })
 export class DashboardComponent implements OnInit {
   
-  // Propiedad necesaria para el overlay del sidebar
   sidebarVisible$ = new BehaviorSubject<boolean>(false);
   
-  // Lista de campus reutilizable
-  campusList: Campus[] = [
+  // Usamos tu nueva interfaz Sede
+  campusList: Sede[] = [
     {
       id: 1,
       name: 'SEDE CAPILLA - ADMINISTRATIVO',
@@ -67,24 +66,26 @@ export class DashboardComponent implements OnInit {
     }
   ];
   
+  // CAMBIO 4: Inyectamos el Router en el constructor para poder usarlo
+  constructor(private router: Router) {}
+  
   ngOnInit() {
-    // Inicialización del componente si es necesario
     console.log('Dashboard inicializado con', this.campusList.length, 'campus');
   }
 
+  // CAMBIO 5: Modificamos la función para que navegue al formulario
   openSede(sedeId: number) {
     const campus = this.campusList.find(c => c.id === sedeId);
-    console.log('Abrir sede:', campus?.name);
-    // Aquí puedes navegar a la página de la sede
+    console.log('Navegando al formulario para la sede:', campus?.name);
+    // Esta línea usa el Router para cambiar de página
+    this.router.navigate(['/admin/waste-form', sedeId]);
   }
 
-  // Método necesario para cerrar el sidebar (usado en el overlay)
   closeSidebar() {
     this.sidebarVisible$.next(false);
   }
 
-  // TrackBy function para optimizar el *ngFor
-  trackByCampusId(index: number, campus: Campus): number {
+  trackByCampusId(index: number, campus: Sede): number {
     return campus.id;
   }
 }

@@ -1,0 +1,104 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px); /* Ocupa el alto disponible menos el navbar */
+  background-color: #eef2f5;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.success-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Empuja el botón hacia abajo */
+  width: 100%;
+  max-width: 450px;
+  height: 70vh; /* Usa un alto relativo para adaptarse */
+  max-height: 600px;
+  background-color: white;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.content-top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.success-message {
+  background-color: #27ae60;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* --- Animación del Checkmark --- */
+.success-checkmark {
+  width: 56px;
+  height: 56px;
+}
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+  stroke-miterlimit: 10;
+  stroke: #27ae60;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  stroke-width: 4;
+  stroke: #27ae60;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+@keyframes stroke {
+  100% { stroke-dashoffset: 0; }
+}
+
+/* --- Ilustración --- */
+.illustration-container {
+  flex-grow: 1; /* Ocupa el espacio disponible en el medio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 300px;
+  margin: 1rem auto;
+}
+.illustration-container svg {
+  width: 100%;
+  height: auto;
+}
+
+/* --- Botón Volver --- */
+.button-container {
+  width: 100%;
+}
+.back-button {
+  background-color: #2c3e50;
+  color: white;
+  width: 100%;
+  padding: 1.75rem 0;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 12px;
+  line-height: 0;
+  cursor: pointer;
+  border: none;
+}
+.back-button:hover {
+  background-color: #34495e;
+}

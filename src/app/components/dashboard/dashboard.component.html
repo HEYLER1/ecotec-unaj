@@ -1,33 +1,9 @@
-<!-- dashboard.component.html -->
 <div class="main-container">
   <div class="overlay" (click)="closeSidebar()" [class.visible]="(sidebarVisible$ | async)"></div>
   <app-navbar></app-navbar>
-  <div class="content-wrapper">
-    <main class="campus-list">
-      
-      <!-- Campus Cards usando *ngFor para reutilización -->
-      <mat-card 
-        *ngFor="let campus of campusList; trackBy: trackByCampusId" 
-        class="campus-card" 
-        (click)="openSede(campus.id)">
-        
-        <img mat-card-image 
-             [src]="campus.image" 
-             [alt]="campus.name"
-             class="campus-image">
-        
-        <mat-card-content>
-          <mat-card-title>{{ campus.name }}</mat-card-title>
-        </mat-card-content>
-        
-        <mat-card-actions>
-          <button mat-raised-button color="primary" class="campus-button">
-            <mat-icon>add</mat-icon>
-            Ingresar datos
-          </button>
-        </mat-card-actions>
-      </mat-card>
 
-    </main>
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
   </div>
+
 </div>
