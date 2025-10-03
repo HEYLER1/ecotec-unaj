@@ -74,13 +74,13 @@ export class DashboardComponent implements OnInit {
   }
 
   // CAMBIO 5: Modificamos la función para que navegue al formulario
-  openSede(sedeId: number) {
+  openSedepersonal(sedeId: number) {
     const campus = this.campusList.find(c => c.id === sedeId);
     console.log('Navegando al formulario para la sede:', campus?.name);
     // Esta línea usa el Router para cambiar de página
     this.router.navigate(['/admin/waste-form', sedeId]);
   }
-
+ 
   closeSidebar() {
     this.sidebarVisible$.next(false);
   }

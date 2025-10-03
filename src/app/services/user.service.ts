@@ -12,8 +12,8 @@ export class UserService {
   private myApiUrl: string;
 
   constructor(private http: HttpClient) {
-    this.myAppUrl = environment.endpoint;  // ej: http://localhost:3001/
-    this.myApiUrl = 'api/users/';          // 👈 añadí la barra final
+    this.myAppUrl = environment.endpoint;
+    this.myApiUrl = 'api/users/';
   }
 
   // Registro
@@ -21,8 +21,8 @@ export class UserService {
     return this.http.post(`${this.myAppUrl}${this.myApiUrl}register`, user);
   }
 
-  // Login
-  login(user: User): Observable<string> {
-    return this.http.post<string>(`${this.myAppUrl}${this.myApiUrl}login`, user);
+  // Login - CORREGIDO: Cambiado de Observable<string> a Observable<any>
+  login(user: User): Observable<any> {
+    return this.http.post<any>(`${this.myAppUrl}${this.myApiUrl}login`, user);
   }
 }

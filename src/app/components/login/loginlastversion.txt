@@ -19,10 +19,10 @@ import { SpinnerComponent } from '../../shared/spinner/spinner.component';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
+  // CORREGIDO: Cambiado 'email' por 'username' para coincidir con el HTML
   username: string = '';
   password: string = '';
   loading: boolean = false;
-  selectedRole: string = 'estudiante'; // Por defecto estudiante, para corregi pendiente 
 
   constructor(
     private toastr: ToastrService,
@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async ngAfterViewInit() {
+    // Esperamos a que el DOM esté listo
     setTimeout(async () => {
       await this.initializeParticles();
     }, 100);
@@ -50,10 +51,12 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     try {
       const isSmallScreen = window.innerWidth <= 1024;
       
+      // Inicializar el engine de partículas
       await this.particlesService.initializeParticlesEngine();
       
       if (isSmallScreen) {
-        const position = { x: 50, y: 12 };
+        // MÓVIL: Polígono centrado donde está el logo (reemplaza la imagen)
+        const position = { x: 50, y: 12 }; // Centrado arriba
         const scale = 0.6;
         
         await this.particlesService.loadPolygonParticles(
@@ -61,10 +64,11 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
           'icons/unajlogo.svg',
           position,
           scale,
-          true
+          true // useAbsolutePositioning
         );
       } else {
-        const position = { x: 55, y: 30 };
+        // DESKTOP: Polígono al lado derecho del login (imagen permanece)
+        const position = { x: 55, y: 30 }; // Lado derecho, centrado verticalmente
         const scale = 1.2;
         
         await this.particlesService.loadPolygonParticles(
@@ -72,7 +76,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
           'icons/unajlogo.svg',
           position,
           scale,
-          true
+          true // fullScreen para fondo completo
         );
       }
       
@@ -81,71 +85,38 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // Manejar redimensionamiento de ventana
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     setTimeout(() => {
       this.initializeParticles();
     }, 100);
   }
- 
+
   login() {
+    // Validación usando la propiedad username del componente
     if (this.username.trim() === '' || this.password.trim() === '') {
       this.toastr.error('Todos los campos son obligatorios', 'Error');
       return;
     }
+
+    // Mapeamos username a email para cumplir con la interfaz User
     const user: User = {
-      email: this.username,
-      password: this.password,
-      roleName: this.selectedRole
+      email: this.username, // El username se mapea al campo email requerido por la interfaz
+      password: this.password
     };
+
     this.loading = true;
     this._userService.login(user).subscribe({
-      next: (response: any) => {
-        console.log(' Respuesta completa del backend:', response); 
-        
-        //  SEGURIDAD
-        if (!response || !response.token) {
-          this.toastr.error('Respuesta inválida del servidor', 'Error');
-          this.loading = false;
-          return;
-        }
-        
-        if (!response.user) {
-          this.toastr.error('Datos de usuario no recibidos', 'Error');
-          this.loading = false;
-          return;
-        }
-        
-        if (!response.user.role) {
-          this.toastr.error('Rol de usuario no recibido', 'Error');
-          this.loading = false;
-          return;
-        }
-        
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        
-        const userRole = response.user.role.nombre;
-
-//  roles 
-        if (userRole === 'estudiante') {
-          this.router.navigate(['/admin/dashboard']); 
-          this.toastr.success('Bienvenido estudiante', 'Login exitoso');
-        } else if (userRole === 'personal') {
-          this.router.navigate(['/admin/dashboard']);
-          this.toastr.success('Bienvenido personal', 'Login exitoso');
-        } else {
-          this.router.navigate(['/admin']);
-        }
-        
+      next: (token: string) => {
+        localStorage.setItem('token', token);
+        this.router.navigate(['/admin/dashboard']);
         this.loading = false;
       },
       error: (e: HttpErrorResponse) => {
-        console.error('Error HTTP:', e);
         this._errorService.msjError(e);
         this.loading = false;
       }
     });
   }
-
 }
