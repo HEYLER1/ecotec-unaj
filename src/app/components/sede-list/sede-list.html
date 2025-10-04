@@ -1,13 +1,11 @@
+<!-- CAMBIO: Restaurada la estructura de tarjeta vertical -->
 <main class="campus-list">
   
   <mat-card 
     *ngFor="let campus of campusList; trackBy: trackByCampusId" 
     class="campus-card">
     
-    <img mat-card-image 
-         [src]="campus.image" 
-         [alt]="campus.name"
-         class="campus-image">
+    <div class="card-image-container" [style.background-image]="'url(' + campus.image + ')'"></div>
     
     <mat-card-content>
       <mat-card-title>{{ campus.name }}</mat-card-title>

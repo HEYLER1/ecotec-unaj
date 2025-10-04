@@ -1,164 +1,84 @@
-/* dashboard.component.css - Diseño Mejorado */
+/* --- CAMBIO: Todo el CSS ha sido reemplazado por el diseño adaptable --- */
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 998;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-}
-
-.overlay.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.content-wrapper {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #f8f9fa;
+/* Estilo Base (Mobile First) */
+:host {
+  display: block;
+  background-color: #f8f9fa; /* Fondo claro para el contenido */
+  min-height: calc(100vh - 64px);
 }
 
 .campus-list {
-  padding: 24px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column; /* Vista vertical para móviles */
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
-/* Tarjetas Campus - Diseño Mejorado */
 .campus-card {
-  background: white;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px !important;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+
+  /* Animación de entrada */
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
 }
 
 .campus-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.campus-card:active {
-  transform: translateY(-4px) scale(1.01);
-}
-
-/* Header del menú - Mejorado */
-.card-header {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 3;
-}
-
-.menu-button {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  border-radius: 50%;
-  backdrop-filter: blur(8px);
-  transition: all 0.2s ease;
-}
-
-.menu-button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  transform: scale(1.1);
-}
-
-/* Imágenes - Mejoradas */
-.campus-image {
+.card-image-container {
+  height: 180px;
   width: 100%;
-  height: 220px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-  filter: brightness(0.95);
+  background-size: cover;
+  background-position: center;
 }
 
-.campus-card:hover .campus-image {
-  transform: scale(1.05);
-  filter: brightness(1);
-}
-
-/* Contenido - Mejorado */
 mat-card-content {
-  padding: 20px;
-  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 1rem 1.25rem;
+  text-align: center;
 }
 
 mat-card-title {
-  font-size: 19px;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 16px;
   color: #2c3e50;
-  line-height: 1.3;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* Chips - Mejorados */
-mat-chip-set {
-  margin-bottom: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-mat-chip {
-  font-size: 11px;
-  font-weight: 500;
-  padding: 6px 12px;
-  border-radius: 20px;
-  background-color: #e3f2fd;
-  color: #1976d2;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-mat-chip:hover {
-  background-color: #bbdefb;
-  transform: scale(1.05);
-}
-
-mat-chip[color="accent"] {
-  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-  color: white;
-  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
-}
-
-/* Acciones - Mejoradas */
 mat-card-actions {
-  padding: 16px 20px 20px;
-  background: rgba(248, 249, 250, 0.8);
-  backdrop-filter: blur(10px);
+  padding: 0 1.25rem 1.25rem;
   display: flex;
   justify-content: center;
 }
 
+/* Estilo del botón de tu compañero */
 .campus-button {
   font-size: 14px;
   font-weight: 500;
-  padding: 12px 24px;
-  border-radius: 25px;
+  padding: 10px 20px !important;
+  border-radius: 25px !important;
   text-transform: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+  background-color: #f0f8ff !important;
+  color: #0d6efd !important;
+  border: 1px solid #dee2e6;
+  box-shadow: none !important;
   min-width: 160px;
+  line-height: normal !important;
 }
 
 .campus-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+  background-color: #e7f3ff !important;
 }
 
 .campus-button mat-icon {
@@ -166,64 +86,26 @@ mat-card-actions {
   font-size: 18px;
 }
 
-/* Responsive - Mejorado */
-@media (max-width: 1024px) {
+/* Media Query para vista PC */
+@media (min-width: 992px) {
   .campus-list {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    padding: 20px;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem;
+    gap: 2rem;
+  }
+  .campus-card {
+    max-width: none;
   }
 }
 
-@media (max-width: 768px) {
-  .campus-list {
-    grid-template-columns: 1fr;
-    padding: 16px;
-    gap: 20px;
-  }
-  
-  .campus-image {
-    height: 200px;
-  }
-  
-  mat-card-title {
-    font-size: 17px;
-  }
-  
-  .campus-card:hover {
-    transform: translateY(-4px) scale(1.01);
-  }
-}
-
-@media (max-width: 480px) {
-  .campus-list {
-    padding: 12px;
-    gap: 16px;
-  }
-  
-  .campus-image {
-    height: 180px;
-  }
-  
-  mat-card-content {
-    padding: 16px;
-  }
-  
-  mat-card-title {
-    font-size: 16px;
-  }
-  
-  .campus-card:hover {
-    transform: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-}
-
-/* Animaciones adicionales */
+/* Definición de la animación de entrada */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -231,29 +113,8 @@ mat-card-actions {
   }
 }
 
-.campus-card {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
+/* Retraso para efecto escalonado */
 .campus-card:nth-child(1) { animation-delay: 0.1s; }
 .campus-card:nth-child(2) { animation-delay: 0.2s; }
 .campus-card:nth-child(3) { animation-delay: 0.3s; }
 .campus-card:nth-child(4) { animation-delay: 0.4s; }
-
-/* Estilos para el menú contextual */
-::ng-deep .mat-mdc-menu-panel {
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-::ng-deep .mat-mdc-menu-item {
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-::ng-deep .mat-mdc-menu-item:hover {
-  background-color: rgba(33, 150, 243, 0.1);
-  transform: translateX(4px);
-}

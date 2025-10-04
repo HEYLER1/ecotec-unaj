@@ -1,0 +1,106 @@
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 64px);
+}
+
+.profile-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #052795;
+  padding-bottom: 0.5rem;
+}
+
+.profile-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.profile-avatar {
+  background-color: #052795;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-card mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.profile-card mat-card-subtitle {
+  font-size: 0.9rem;
+  color: #3498db;
+  font-weight: 500;
+}
+
+.profile-card mat-card-content {
+  padding-top: 1.5rem;
+}
+
+.profile-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profile-details li {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.profile-details mat-icon {
+  margin-right: 1rem;
+  color: #7f8c8d;
+}
+
+/* --- Estilos para los estados de carga y error --- */
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #777;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 2px dashed #e0e0e0;
+  margin-top: 2rem;
+}
+
+.loading-container p {
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.error-container mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.5rem;
+  color: #e74c3c;
+}
+
+.error-container h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #c0392b;
+}
+
+.error-container p {
+  margin-top: 0.5rem;
+  max-width: 400px;
+}

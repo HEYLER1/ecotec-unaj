@@ -1,0 +1,58 @@
+<div class="form-container">
+  <ng-container *ngIf="sedeActual">
+
+    <div class="form-header">
+      <h2>Formulario Sede {{ sedeActual.name | uppercase }}</h2>
+      <p>Ingrese los datos correctamente</p>
+    </div>
+
+    <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" class="waste-actual-form">
+
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>Edificios</mat-label>
+        <mat-select formControlName="edificioId" disableRipple>
+          <mat-option *ngFor="let edificio of edificiosDeLaSede" [value]="edificio.id">
+            {{ edificio.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>Pilas</mat-label>
+        <input matInput formControlName="pilasCodigo" placeholder="Escriba el código...">
+      </mat-form-field>
+      
+      <div class="segregation-header">
+        <h3>¿Se segregó correctamente?</h3>
+        <div class="si-no-legend">
+          <span>SI</span>
+          <span>NO</span>
+        </div>
+      </div>
+
+      <!-- --- CAMBIO: La lista de residuos ahora es dinámica y respeta el nuevo orden y colores --- -->
+      <div class="residue-list">
+        <div 
+          *ngFor="let residue of residueTypes" 
+          class="residue-item" 
+          [style.background-color]="residue.color"
+          [style.color]="residue.textColor"
+          [style.border]="residue.color === '#FFFFFF' ? '1px solid #ccc' : 'none'">
+          <span>{{ residue.name }}</span>
+          <div class="checkbox-group">
+            <div class="custom-checkbox" [class.selected]="studentForm.get(residue.formControl)?.value === 'si'" (click)="studentForm.get(residue.formControl)?.setValue('si')"></div>
+            <div class="custom-checkbox" [class.selected]="studentForm.get(residue.formControl)?.value === 'no'" (click)="studentForm.get(residue.formControl)?.setValue('no')"></div>
+          </div>
+        </div>
+      </div>
+      
+      <button mat-raised-button type="submit" class="submit-button" [disabled]="studentForm.invalid">
+        Enviar
+      </button>
+    </form>
+  </ng-container>
+
+  <ng-container *ngIf="!sedeActual">
+    <p>Cargando datos del formulario...</p>
+  </ng-container>
+</div>

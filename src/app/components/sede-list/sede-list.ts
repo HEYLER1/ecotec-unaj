@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Sede } from '../../interfaces/sede';
 
@@ -18,8 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule
   ],
-  // --- CAMBIOS AQUÍ ---
-  // Apuntamos a los nombres de archivo correctos, sin el ".component"
   templateUrl: './sede-list.html',
   styleUrls: ['./sede-list.css']
 })
@@ -32,10 +30,46 @@ export class SedeListComponent {
     { id: 4, name: 'SEDE SANTA CATALINA', image: 'images/sede.jpg' }
   ];
   
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
+  private getUserRole(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          return user.role?.nombre || null;
+        } catch (error) {
+          console.error('Error al parsear datos de usuario del localStorage', error);
+          return null;
+        }
+      }
+    }
+    return null;
+  }
 
   openSede(sedeId: number) {
-    this.router.navigate(['/admin/waste-form', sedeId]);
+    const userRole = this.getUserRole();
+
+    // --- CAMBIO 1: El "espía" para ver el rol exacto en la consola ---
+    console.log("Rol detectado en localStorage:", userRole);
+
+    if (userRole === 'estudiante') {
+      console.log('Usuario es ESTUDIANTE. Navegando a form-estudiante...');
+      this.router.navigate(['/admin/form-estudiante', sedeId]);
+
+    } else if (userRole === 'personal') {
+      console.log('Usuario es PERSONAL. Navegando a form-personal...');
+      // --- CAMBIO 2: Corregida la ruta para que apunte al nuevo componente ---
+      this.router.navigate(['/admin/form-personal', sedeId]);
+
+    } else {
+      console.error('No se pudo determinar el rol del usuario o es nulo. No se puede navegar.');
+      // Esto es lo que probablemente está pasando.
+    }
   }
 
   trackByCampusId(index: number, campus: Sede): number {

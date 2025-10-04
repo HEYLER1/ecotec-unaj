@@ -1,12 +1,20 @@
 <aside class="sidebar" [class.visible]="isVisible">
-      <div class="sidebar-header">
-        <span class="material-icons close-icon" (click)="onCloseSidebar()">close</span>
-      </div>
-      <nav class="sidebar-nav">
-        <ul>
-          <li><a href="#" class="active" (click)="onCloseSidebar()">INICIO</a></li>
-          <li><a href="#" (click)="onCloseSidebar()">RECIENTES</a></li>
-          <li><a href="#" (click)="onCloseSidebar()">DATOS</a></li>
-        </ul>
-      </nav>
+    <div class="sidebar-header">
+      <!-- CAMBIO: Añadido un título o logo (opcional, se puede quitar) -->
+      <span class="header-title">ECOTEC-UNAJ</span>
+      <span class="material-icons close-icon" (click)="onCloseSidebar()">close</span>
+    </div>
+    <nav class="sidebar-nav">
+      <ul>
+        <!-- CAMBIO: Los enlaces ahora usan routerLink para la navegación de Angular -->
+        <li>
+          <a routerLink="/admin/dashboard" routerLinkActive="active" (click)="onCloseSidebar()">INICIO</a>
+        </li>
+        <li>
+          <!-- Este enlace apuntará a la nueva página que crearemos -->
+          <a routerLink="/admin/recientes" routerLinkActive="active" (click)="onCloseSidebar()">RECIENTES</a>
+        </li>
+        <!-- CAMBIO: El enlace "DATOS" ha sido eliminado -->
+      </ul>
+    </nav>
 </aside>

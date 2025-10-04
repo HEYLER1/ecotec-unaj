@@ -6,7 +6,7 @@
 .header {
   position: relative;
   z-index: 1001;
-  background-color: #221fcf;
+  background-color: #052795;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   display: flex;
   justify-content: space-between;
@@ -14,7 +14,11 @@
   padding: 0 16px;
 }
 
-.header-left {
+.header .mat-mdc-icon-button mat-icon {
+  color: white;
+}
+
+.header-left, .header-right {
   display: flex;
   align-items: center;
 }
@@ -26,32 +30,8 @@
   align-items: center;
 }
 
-
-
-.header-right {
-  display: flex;
-  align-items: center;
-}
-
-.profile-popup {
-  min-width: 200px;
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  background-color: #f5f5f5;
-}
-
-.popup-profile-icon {
-  margin-right: 8px;
-  color: #ffffff;
-}
-
-.profile-header-text {
-  font-weight: 500;
-  color: #bb1b1b;
+.profile-popup .mat-mdc-menu-content {
+  padding: 0 !important;
 }
 
 .profile-info {
@@ -61,8 +41,7 @@
 .profile-name {
   padding: 12px 16px;
   font-weight: 600;
-  color: #0f0d0d;
-  border-bottom: 1px solid #a01717;
+  color: #333;
 }
 
 .profile-options {
@@ -73,7 +52,7 @@
   border: none;
   background: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .profile-options:hover {
@@ -85,7 +64,7 @@
   font-size: 20px;
   width: 20px;
   height: 20px;
-  color: #fff8f8;
+  color: #555;
 }
 
 .logout-link {
@@ -96,7 +75,6 @@
   color: #f44336;
 }
 
-/* Overlay para el sidebar */
 .sidebar-overlay {
   position: fixed;
   top: 0;

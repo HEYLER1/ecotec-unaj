@@ -33,24 +33,48 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./components/sede-list/sede-list').then(c => c.SedeListComponent),
         canActivate: [roleGuard],
-        data: { roles: ['estudiante', 'personal'] } // 👈 Ambos roles
+        data: { roles: ['estudiante', 'personal'] }
       },
-      
-      // WASTE-FORM - Solo para PERSONAL
+
+      // FORM-ESTUDIANTE - Solo para ESTUDIANTES
       {
-        path: 'waste-form/:sedeId',
-        loadComponent: () => import('./components/waste-form/waste-form').then(c => c.WasteFormComponent),
+        path: 'form-estudiante/:sedeId',
+        loadComponent: () => import('./components/forms-student/forms-student').then(c => c.FormEstudianteComponent),
         canActivate: [roleGuard],
-        data: { roles: ['personal'] } // 👈 Solo personal
+        data: { roles: ['estudiante'] } 
       },
       
+      // La ruta para el personal ahora apunta al nuevo componente 'form-personal'
+      {
+        path: 'form-personal/:sedeId',
+        loadComponent: () => import('./components/form-personal/form-personal').then(c => c.FormPersonal),
+        canActivate: [roleGuard],
+        data: { roles: ['personal'] }
+      },
+
+      // RECIENTES - Para TODOS (estudiantes y personal)
+      {
+        path: 'recientes',
+        loadComponent: () => import('./components/recent-entries/recent-entries').then(c => c.RecentEntriesComponent),
+        canActivate: [roleGuard],
+        data: { roles: ['estudiante', 'personal'] }
+      },
+
+      // --- NUEVA RUTA AÑADIDA ---
+      // PERFIL - Para TODOS (estudiantes y personal)
+      {
+        path: 'profile',
+        loadComponent: () => import('./components/profile/profile').then(c => c.Profile),
+        canActivate: [roleGuard],
+        data: { roles: ['estudiante', 'personal'] }
+      },
       
       // FORM-SUCCESS - Para TODOS (después de enviar formulario)
       {
         path: 'form-success',
-        loadComponent: () => import('./components/form-personal/form-success').then(c => c.FormSuccess),
+        loadComponent: () => import('./components/form-success/form-success').then(c => c.FormSuccess),
         canActivate: [roleGuard],
-        data: { roles: ['estudiante', 'personal'] } // 👈 Ambos roles
+        data: { roles: ['estudiante', 'personal'] }
       }
     ]
   },
