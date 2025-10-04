@@ -7,7 +7,7 @@
     </div>
     
     <div class="header-center">
-      <div class="header-dot"></div>
+      <!-- Puedes poner el logo aquí si lo necesitas en el futuro -->
     </div>
     
     <div class="header-right">
@@ -15,19 +15,15 @@
         <mat-icon>person</mat-icon>
       </button>
       
+      <!-- CAMBIO: Menú de perfil simplificado para evitar duplicidad -->
       <mat-menu #profileMenu="matMenu" class="profile-popup">
-        <div class="profile-header" mat-menu-item disabled>
-          <mat-icon class="popup-profile-icon">person</mat-icon>
-          <span class="profile-header-text">Perfil</span>
-        </div>
-        
-        <mat-divider></mat-divider>
-        
         <div class="profile-info">
           <div mat-menu-item disabled class="profile-name">
             <span>NOMBRES APELLIDOS</span>
           </div>
           
+          <mat-divider></mat-divider>
+
           <button mat-menu-item class="profile-options" (click)="viewProfile()">
             <mat-icon>person</mat-icon>
             <span>Ver Perfil</span>
@@ -42,13 +38,11 @@
     </div>
   </mat-toolbar>
 
-  <!-- Sidebar integrado -->
   <app-sidebar 
     [isVisible]="sidebarVisible" 
     (closeSidebar)="closeSidebar()">
   </app-sidebar>
 
-  <!-- Overlay para cerrar el sidebar -->
   <div 
     class="sidebar-overlay" 
     [class.active]="sidebarVisible"

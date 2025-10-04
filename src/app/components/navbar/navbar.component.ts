@@ -39,8 +39,9 @@ export class NavbarComponent {
     this.sidebarVisible = false;
   }
 
+  // --- CAMBIO AQUÍ: Corregida la ruta para que apunte a /admin/profile ---
   viewProfile(): void {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/admin/profile']);
   }
 
   logout(): void {

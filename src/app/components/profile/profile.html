@@ -1,0 +1,41 @@
+<div class="profile-container">
+  <h1 class="page-title">Mi Perfil</h1>
+
+  <!-- 1. Se muestra mientras se cargan los datos -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Cargando perfil...</p>
+  </div>
+
+  <!-- 2. Se muestra si, después de cargar, se encontraron datos del usuario -->
+  <mat-card *ngIf="!isLoading && userProfile" class="profile-card">
+    <mat-card-header>
+      <div mat-card-avatar class="profile-avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+      <mat-card-title>{{ userProfile.nombres }} {{ userProfile.apellidos }}</mat-card-title>
+      <mat-card-subtitle>{{ userProfile.role.nombre | uppercase }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <ul class="profile-details">
+        <li>
+          <mat-icon>email</mat-icon>
+          <span>{{ userProfile.email }}</span>
+        </li>
+        <!-- ESTA ES LA LÓGICA INTELIGENTE: El código solo se muestra si existe -->
+        <li *ngIf="userProfile.codigo">
+          <mat-icon>badge</mat-icon>
+          <span>{{ userProfile.codigo }}</span>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- 3. Se muestra si, después de cargar, NO se encontraron datos -->
+  <div *ngIf="!isLoading && !userProfile" class="error-container">
+    <mat-icon>error_outline</mat-icon>
+    <h2>No se pudo cargar el perfil</h2>
+    <p>La información del usuario no se encontró. Por favor, intente iniciar sesión de nuevo.</p>
+  </div>
+</div>

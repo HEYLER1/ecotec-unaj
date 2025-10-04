@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 64px);
+}
+
+.entries-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  border-bottom: 3px solid #052795;
+  padding-bottom: 0.5rem;
+}
+
+/* --- Estilos para el estado de carga --- */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #777;
+}
+
+.loading-container p {
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+
+/* --- Estilos para el mensaje de "No hay registros" --- */
+.no-entries-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #95a5a6;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 2px dashed #e0e0e0;
+  margin-top: 2rem;
+}
+
+.no-entries-message mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.5rem;
+  color: #bdc3c7;
+}
+
+.no-entries-message h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #7f8c8d;
+}
+
+.no-entries-message p {
+  margin-top: 0.5rem;
+  max-width: 300px;
+}
+
+
+/* --- Estilos para la lista de registros (listos para cuando haya datos) --- */
+.entries-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.entry-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.entry-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+}
+
+.entry-card .mat-mdc-card-header { padding-bottom: 8px; }
+.entry-card .mat-mdc-card-title { font-weight: 600; }
+.entry-card .mat-mdc-card-avatar { display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; width: 40px; height: 40px; }
+.student-icon { background-color: #3498db; }
+.staff-icon { background-color: #f1c40f; }
+.entry-card .mat-mdc-card-content { color: #555; line-height: 1.6; padding-top: 8px; }
