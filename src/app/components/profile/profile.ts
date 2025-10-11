@@ -1,22 +1,13 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-
-// Imports de Angular Material para el diseño
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
-
-// Interfaz para la información del usuario que esperamos del localStorage
-interface UserProfile {
-  nombres: string;
-  apellidos: string;
-  email: string;
-  codigo?: string; // El '?' significa que este campo es opcional
-  role: {
-    nombre: string;
-  };
-}
+import { UserInfoService } from '../../services/UserInfo.service';
+import { UserProfile, UserProfileResponse } from '../../interfaces/UserInfo'; // ✅ Importar ambos
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-profile',
@@ -32,31 +23,55 @@ interface UserProfile {
   styleUrl: './profile.css'
 })
 export class Profile implements OnInit {
-
   isLoading: boolean = true;
   userProfile: UserProfile | null = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private userInfoService: UserInfoService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    // Para evitar errores en el servidor, solo accedemos a localStorage en el navegador
     if (isPlatformBrowser(this.platformId)) {
       this.loadUserProfile();
     } else {
-      this.isLoading = false; // En el servidor, simplemente no mostramos nada
+      this.isLoading = false;
     }
   }
 
   private loadUserProfile(): void {
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-      try {
-        this.userProfile = JSON.parse(userStr);
-      } catch (error) {
-        console.error('Error al leer los datos del perfil de usuario:', error);
-        this.userProfile = null;
+    this.userInfoService.getUserProfile().subscribe({
+      next: (response: UserProfileResponse) => {
+        this.userProfile = response.data;
+        console.log(' Perfil del usuario cargado:', this.userProfile);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(' Error al cargar perfil:', error);
+        this.toastr.error('No se pudo cargar el perfil', 'Error');
+        this.isLoading = false;
+        
+        if (error.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          this.router.navigate(['/login']);
+        }
       }
-    }
-    this.isLoading = false; // Terminamos de "cargar"
+    });
+  }
+
+  get fullName(): string {
+    if (!this.userProfile) return '';
+    return `${this.userProfile.nombre} ${this.userProfile.apellido}`;
+  }
+
+  get roleName(): string {
+    return this.userProfile?.perfil?.nombre || 'Sin perfil';
+  }
+
+  get phoneNumber(): string {
+    return this.userProfile?.telefono || 'No registrado';
   }
 }

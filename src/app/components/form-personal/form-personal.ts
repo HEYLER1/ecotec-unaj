@@ -35,10 +35,10 @@ export class FormPersonal implements OnInit {
   modoPersonalActivo: 'pilas' | 'canastillas' | 'tacho' = 'pilas';
 
   private allSedes: Sede[] = [
-    { id: 1, name: 'SEDE CAPILLA - ADMINISTRATIVO', image: '' },
-    { id: 2, name: 'SEDE AYABACAS', image: '' },
-    { id: 3, name: 'SEDE CAPILLA - ACADÉMICO', image: '' },
-    { id: 4, name: 'SEDE SANTA CATALINA', image: '' }
+    { id_sede: 11, nombre: 'SEDE CAPILLA - ADMINISTRATIVO', imagen: '', estado :1},
+    { id_sede: 21, nombre: 'SEDE AYABACAS', imagen: '', estado : 1 },
+    {id_sede: 31, nombre: 'SEDE CAPILLA - ACADÉMICO', imagen: '', estado: 1 },
+    { id_sede: 41, nombre: 'SEDE SANTA CATALINA', imagen: '', estado: 1 }
   ];
 
   private allEdificios: Edificio[] = [
@@ -71,7 +71,7 @@ export class FormPersonal implements OnInit {
     
     if (sedeId) {
       const id = parseInt(sedeId, 10);
-      this.sedeActual = this.allSedes.find(s => s.id === id);
+      this.sedeActual = this.allSedes.find(s => s.id_sede === id);
       this.edificiosDeLaSede = this.allEdificios.filter(e => e.sedeId === id);
       this.initializeForm();
     }

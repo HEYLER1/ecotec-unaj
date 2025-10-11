@@ -1,4 +1,14 @@
 export interface User {
+    email: string;
+    password: string;
+    perfil?: {
+        id_perfil: number;
+        nombre: string;
+        descripcion?: string;
+    }
+}
+
+/*export interface User {
     email: string,
     password: string
     roleName?: string;
@@ -7,4 +17,4 @@ export interface User {
     nombre: string;
     descripcion?: string;
   }
-}
+}*/

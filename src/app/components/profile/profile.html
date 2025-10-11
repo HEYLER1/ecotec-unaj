@@ -13,20 +13,28 @@
       <div mat-card-avatar class="profile-avatar">
         <mat-icon>person</mat-icon>
       </div>
-      <mat-card-title>{{ userProfile.nombres }} {{ userProfile.apellidos }}</mat-card-title>
-      <mat-card-subtitle>{{ userProfile.role.nombre | uppercase }}</mat-card-subtitle>
+      <mat-card-title>{{ fullName }}</mat-card-title>
+      <mat-card-subtitle>{{ roleName | uppercase }}</mat-card-subtitle>
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content>
       <ul class="profile-details">
+        <!-- Email -->
         <li>
           <mat-icon>email</mat-icon>
           <span>{{ userProfile.email }}</span>
         </li>
-        <!-- ESTA ES LA LÓGICA INTELIGENTE: El código solo se muestra si existe -->
-        <li *ngIf="userProfile.codigo">
+        
+        <!-- DNI -->
+        <li>
           <mat-icon>badge</mat-icon>
-          <span>{{ userProfile.codigo }}</span>
+          <span>DNI: {{ userProfile.dni }}</span>
+        </li>
+        
+        <!-- Teléfono - Solo se muestra si existe -->
+        <li *ngIf="userProfile.telefono">
+          <mat-icon>phone</mat-icon>
+          <span>{{ phoneNumber }}</span>
         </li>
       </ul>
     </mat-card-content>

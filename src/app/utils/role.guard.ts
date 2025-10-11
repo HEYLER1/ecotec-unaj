@@ -1,4 +1,63 @@
 // utils/role.guard.ts
+// utils/role.guard.ts
+import { inject } from '@angular/core';
+import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
+
+export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
+  const router = inject(Router);
+  
+  // Protección SSR
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  // Obtener el usuario del localStorage
+  const userStr = localStorage.getItem('user');
+  
+  if (!userStr) {
+    router.navigate(['/login']);
+    return false;
+  }
+
+  try {
+    const user = JSON.parse(userStr);
+    
+    const userPerfil = user.perfil?.nombre;
+    
+    if (!userPerfil) {
+      console.error('Usuario sin perfil asignado');
+      router.navigate(['/login']);
+      return false;
+    }
+
+    console.log('Perfil del usuario:', userPerfil);
+
+
+    const allowedRoles = route.data['roles'] as string[];
+    
+    console.log('Perfiles permitidos en esta ruta:', allowedRoles);
+
+    // Verificar si el usuario tiene permiso
+    if (allowedRoles && allowedRoles.length > 0) {
+      if (!allowedRoles.includes(userPerfil)) {
+        console.warn(` denegado. Perfil "${userPerfil}" no está en:`, allowedRoles);
+        // Redirigir a dashboard si no tiene acceso a esta ruta
+        router.navigate(['/admin/dashboard']);
+        return false;
+      }
+    }
+    
+    console.log('Acceso permitido');
+    return true;
+    
+  } catch (error) {
+    console.error('Error al verificar perfil:', error);
+    router.navigate(['/login']);
+    return false;
+  }
+};
+
+/*
 import { inject } from '@angular/core';
 import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
 
@@ -47,4 +106,4 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
     router.navigate(['/login']);
     return false;
   }
-};
+};*/

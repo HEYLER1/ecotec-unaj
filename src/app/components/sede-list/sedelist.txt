@@ -57,7 +57,7 @@ export class SedeListComponent implements OnInit {
       if (userStr) {
         try {
           const user = JSON.parse(userStr);
-          return user.perfil?.nombre || null;
+          return user.role?.nombre || null;
         } catch (error) {
           console.error('Error al parsear datos de usuario del localStorage', error);
           return null;
@@ -67,18 +67,18 @@ export class SedeListComponent implements OnInit {
     return null;
   }
 
-  openSede(id_sede: number) {
+  openSede(sedeId: number) {
     const userRole = this.getUserRole();
 
     console.log("Rol detectado en localStorage:", userRole);
 
     if (userRole === 'estudiante') {
       console.log('Usuario es ESTUDIANTE. Navegando a form-estudiante...');
-      this.router.navigate(['/admin/form-estudiante', id_sede]);
+      this.router.navigate(['/app/form-estudiante', sedeId]);
 
     } else if (userRole === 'personal') {
       console.log('Usuario es PERSONAL. Navegando a form-personal...');
-      this.router.navigate(['/admin/form-personal', id_sede]);
+      this.router.navigate(['/app/form-personal', sedeId]);
 
     } else {
       console.error('No se pudo determinar el rol del usuario o es nulo. No se puede navegar.');
@@ -86,6 +86,6 @@ export class SedeListComponent implements OnInit {
   }
 
   trackByCampusId(index: number, campus: Sede): number {
-    return campus.id_sede;
+    return campus.id;
   }
 }

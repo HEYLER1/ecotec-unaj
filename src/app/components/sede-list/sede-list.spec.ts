@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SedeList } from './sede-list';
+import { SedeListComponent } from './sede-list';
 
 describe('SedeList', () => {
-  let component: SedeList;
-  let fixture: ComponentFixture<SedeList>;
+  let component: SedeListComponent;
+  let fixture: ComponentFixture<SedeListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SedeList]
+      imports: [SedeListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SedeList);
+    fixture = TestBed.createComponent(SedeListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

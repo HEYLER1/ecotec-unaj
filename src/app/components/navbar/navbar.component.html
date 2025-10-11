@@ -15,25 +15,36 @@
         <mat-icon>person</mat-icon>
       </button>
       
-      <!-- CAMBIO: Menú de perfil simplificado para evitar duplicidad -->
-      <mat-menu #profileMenu="matMenu" class="profile-popup">
-        <div class="profile-info">
-          <div mat-menu-item disabled class="profile-name">
-            <span>NOMBRES APELLIDOS</span>
+      <!-- ✅ Menú de perfil mejorado -->
+      <mat-menu #profileMenu="matMenu" class="user-menu-panel">
+        <!-- Header del menú con información del usuario -->
+        <div class="user-menu-header">
+          <div class="user-avatar-large">
+            <span class="initials-text">{{ initials }}</span>
           </div>
-          
-          <mat-divider></mat-divider>
-
-          <button mat-menu-item class="profile-options" (click)="viewProfile()">
-            <mat-icon>person</mat-icon>
-            <span>Ver Perfil</span>
-          </button>
-          
-          <button mat-menu-item class="profile-options logout-link" (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            <span>Cerrar Sesión</span>
-          </button>
+          <div class="user-info-header">
+            <div class="user-name-large">
+              {{ isLoadingProfile ? 'Cargando...' : fullName }}
+            </div>
+            <div class="user-email-large">
+              {{ userEmail }}
+            </div>
+          </div>
         </div>
+
+        <!-- Opciones del menú -->
+        <button mat-menu-item (click)="viewProfile()">
+          <mat-icon>person_outline</mat-icon>
+          <span>Mi Perfil</span>
+        </button>
+
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+
+        <mat-divider></mat-divider>
+
       </mat-menu>
     </div>
   </mat-toolbar>
