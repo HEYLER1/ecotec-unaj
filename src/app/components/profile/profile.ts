@@ -4,8 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 import { UserInfoService } from '../../services/UserInfo.service';
-import { UserProfile, UserProfileResponse } from '../../interfaces/UserInfo'; // ✅ Importar ambos
+import { UserProfile, UserProfileResponse } from '../../interfaces/UserInfo';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
@@ -17,7 +21,11 @@ import { ToastrService } from 'ngx-toastr';
     MatCardModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatDividerModule
+    MatDividerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    FormsModule
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.css'
@@ -25,6 +33,15 @@ import { ToastrService } from 'ngx-toastr';
 export class Profile implements OnInit {
   isLoading: boolean = true;
   userProfile: UserProfile | null = null;
+  activeSection: 'personal' | 'password' = 'personal';
+  
+  // Password fields
+  currentPassword: string = '';
+  newPassword: string = '';
+  repeatPassword: string = '';
+  hideCurrentPassword: boolean = true;
+  hideNewPassword: boolean = true;
+  hideRepeatPassword: boolean = true;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -45,11 +62,11 @@ export class Profile implements OnInit {
     this.userInfoService.getUserProfile().subscribe({
       next: (response: UserProfileResponse) => {
         this.userProfile = response.data;
-        console.log(' Perfil del usuario cargado:', this.userProfile);
+        console.log('Perfil del usuario cargado:', this.userProfile);
         this.isLoading = false;
       },
       error: (error) => {
-        console.error(' Error al cargar perfil:', error);
+        console.error('Error al cargar perfil:', error);
         this.toastr.error('No se pudo cargar el perfil', 'Error');
         this.isLoading = false;
         
@@ -64,7 +81,7 @@ export class Profile implements OnInit {
 
   get fullName(): string {
     if (!this.userProfile) return '';
-    return `${this.userProfile.nombre} ${this.userProfile.apellido}`;
+    return `${this.userProfile.nombre} ${this.userProfile.apellido}`.toUpperCase();
   }
 
   get roleName(): string {
@@ -73,5 +90,31 @@ export class Profile implements OnInit {
 
   get phoneNumber(): string {
     return this.userProfile?.telefono || 'No registrado';
+  }
+
+  get userId(): string {
+    return this.userProfile?.dni || '';
+  }
+
+  setActiveSection(section: 'personal' | 'password'): void {
+    this.activeSection = section;
+  }
+
+  savePasswordChanges(): void {
+    if (!this.currentPassword || !this.newPassword || !this.repeatPassword) {
+      this.toastr.warning('Por favor complete todos los campos', 'Advertencia');
+      return;
+    }
+
+    if (this.newPassword !== this.repeatPassword) {
+      this.toastr.error('Las contraseñas no coinciden', 'Error');
+      return;
+    }
+
+    // Aquí iría la lógica para cambiar la contraseña
+    this.toastr.success('Contraseña actualizada correctamente', 'Éxito');
+    this.currentPassword = '';
+    this.newPassword = '';
+    this.repeatPassword = '';
   }
 }

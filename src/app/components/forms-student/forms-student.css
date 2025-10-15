@@ -10,133 +10,107 @@
 .form-container {
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 2rem auto;
   background-color: white;
   padding: 1.5rem;
   box-sizing: border-box;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Media Query para pantallas de escritorio --- */
 @media (min-width: 992px) {
   .form-container {
-    width: 60%;
     max-width: 900px;
-    margin: 2rem auto;
     padding: 2.5rem 3rem;
   }
 }
 
-/* --- Encabezado Verde --- */
+/* --- Encabezado --- */
 .form-header {
-  background-color: #27ae60;
+  background-color: #052795; /* Azul solicitado */
   color: white;
-  padding: 1rem 1.25rem;
+  padding: 1.5rem 1.25rem;
   border-radius: 12px;
   margin-bottom: 2rem;
+  text-align: center; /* Títulos centrados */
 }
-.form-header h2 { margin: 0; font-size: 1.2rem; font-weight: bold; }
-.form-header p { margin: 0.25rem 0 0; opacity: 0.9; font-size: 0.9rem; }
+.form-header h2 { margin: 0; font-size: 1.5rem; font-weight: bold; }
+.form-header p { margin: 0.25rem 0 0; opacity: 0.95; font-size: 1rem; }
 
 /* --- Formulario y Campos --- */
 .waste-actual-form {
   display: flex; flex-direction: column; gap: 1.5rem;
 }
 
-.custom-form-field .mat-mdc-form-field-flex {
-  background-color: #f1f3f6 !important;
-  border-radius: 8px 8px 0 0 !important;
-}
-.custom-form-field .mdc-line-ripple { display: none !important; }
-.custom-form-field .mat-mdc-form-field-subscript-wrapper { display: none !important; }
-
 /* --- SECCIÓN ESTUDIANTE --- */
-.segregation-header { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding: 0 0.5rem; }
-.segregation-header h3 { margin: 0; font-size: 1rem; font-weight: 500; color: #333; }
-.si-no-legend { display: flex; gap: 1.75rem; font-weight: 500; font-size: 0.9rem; color: #555; margin-right: 0.1rem; }
+.segregation-header { margin-top: 1rem; padding: 0 0.5rem; }
+.segregation-header h3 { margin: 0; font-size: 1.1rem; font-weight: 500; color: #333; }
+
+/* Contenedor para alinear la leyenda a la derecha */
+.si-no-legend-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Leyenda con ancho fijo para alinear el texto sobre las cajas */
+.si-no-legend {
+  display: flex;
+  justify-content: space-around;
+  width: 80px; /* Ancho ajustado para alinear texto */
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+
 .residue-list { display: flex; flex-direction: column; gap: 0.75rem; }
-.residue-item { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 1.25rem; border-radius: 8px; color: white; font-weight: 500; font-size: 0.9rem; }
-.checkbox-group { display: flex; gap: 1rem; }
+.residue-item {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding: 0.9rem 1.25rem; 
+  border-radius: 8px; 
+  color: white; 
+  font-weight: 500; 
+  font-size: 1rem; 
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efecto hover sin crecimiento */
+.residue-item:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+.checkbox-group { display: flex; gap: 1rem; align-items: center; }
 .custom-checkbox { width: 28px; height: 28px; background-color: white; border: 1px solid rgba(0,0,0,0.1); border-radius: 4px; cursor: pointer; transition: all 0.2s ease; position: relative; }
 .custom-checkbox:active { transform: scale(0.9); }
 .custom-checkbox.selected { background-color: #3498db; border-color: #3498db; }
 .custom-checkbox.selected::after { content: '✔'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; font-weight: bold; }
 
-/* --- NUEVOS ESTILOS PARA PERSONAL --- */
-.mode-selector {
+/* --- Contenedor para el botón --- */
+.submit-button-container {
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  background-color: #e0e0e0;
-  border-radius: 8px;
-  padding: 0.25rem;
-}
-.mode-button {
-  flex: 1;
-  padding: 0.75rem 0.5rem;
-  border: none;
-  background-color: transparent;
-  border-radius: 6px;
-  font-weight: 500;
-  color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-.mode-button.active {
-  background-color: #f1c40f; /* Amarillo del Figma */
-  color: #2c3e50;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.kg-title {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #333;
-  margin: 1rem 0 0;
-  padding-left: 0.25rem;
-}
-.kg-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-.kg-input-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f1f3f6;
-  border-radius: 8px;
-  padding-left: 1rem;
-}
-.kg-input-row span {
-  font-weight: 500;
-  color: #333;
-}
-.kg-form-field {
-  width: 100px;
-}
-.kg-form-field .mat-mdc-form-field-flex {
-  background-color: #e0e0e0 !important;
-  border-radius: 8px !important;
-}
-.kg-form-field input {
-  text-align: center;
-  font-weight: 500;
+  justify-content: center; /* Centra el botón */
+  margin-top: 1.5rem;
 }
 
 /* --- Botón de Envío (Común) --- */
 .submit-button {
-  background-color: #2c3e50;
+  background-image: linear-gradient(to right, #052795 0%, #0056b3 51%, #052795 100%);
+  background-size: 200% auto;
   color: white;
-  width: 100%;
-  padding: 1.75rem 0;
-  font-size: 1rem;
+  padding: 1.5rem 5rem; /* Aumentado verticalmente */
+  font-size: 1.1rem;
   font-weight: bold;
-  margin-top: 1.5rem;
   border-radius: 12px;
   line-height: 0;
-  transition: background-color 0.2s;
+  border: none;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
-.submit-button:hover { background-color: #34495e; }
-.submit-button:disabled { background-color: #95a5a6; color: #ecf0f1; }
+.submit-button:hover { background-position: right center; }
+.submit-button:disabled { background-image: none; background-color: #95a5a6; color: #ecf0f1; cursor: not-allowed; }

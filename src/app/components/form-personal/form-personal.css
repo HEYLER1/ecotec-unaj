@@ -2,7 +2,7 @@
 :host {
   display: block;
   background-color: #eef2f5;
-  min-height: calc(100vh - 64px); /* Resta la altura del navbar si existe */
+  min-height: calc(100vh - 64px);
   padding: 1rem;
   box-sizing: border-box;
 }
@@ -10,55 +10,50 @@
 .form-container {
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
+  margin: 2rem auto;
   background-color: white;
   padding: 1.5rem;
   box-sizing: border-box;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 /* --- Media Query para pantallas de escritorio --- */
 @media (min-width: 992px) {
   .form-container {
-    width: 60%;
     max-width: 900px;
-    margin: 2rem auto;
     padding: 2.5rem 3rem;
   }
 }
 
-/* --- Encabezado Verde --- */
+/* --- Encabezado --- */
 .form-header {
-  background-color: #27ae60;
+  background-color: #052795; /* Azul solicitado */
   color: white;
-  padding: 1rem 1.25rem;
+  padding: 1.5rem 1.25rem;
   border-radius: 12px;
   margin-bottom: 2rem;
+  text-align: center; /* Títulos centrados */
 }
-.form-header h2 { margin: 0; font-size: 1.2rem; font-weight: bold; }
-.form-header p { margin: 0.25rem 0 0; opacity: 0.9; font-size: 0.9rem; }
+.form-header h2 { margin: 0; font-size: 1.5rem; font-weight: bold; }
+.form-header p { margin: 0.25rem 0 0; opacity: 0.95; font-size: 1rem; }
 
 /* --- Formulario y Campos --- */
 .waste-actual-form {
-  display: flex; flex-direction: column; gap: 1.5rem;
+  display: flex; 
+  flex-direction: column; 
+  gap: 1.5rem;
 }
-
-.custom-form-field .mat-mdc-form-field-flex {
-  background-color: #f1f3f6 !important;
-  border-radius: 8px 8px 0 0 !important;
-}
-.custom-form-field .mdc-line-ripple { display: none !important; }
-.custom-form-field .mat-mdc-form-field-subscript-wrapper { display: none !important; }
 
 /* --- Estilos específicos para el formulario de Personal --- */
 .mode-selector {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
-  background-color: #e0e0e0;
+  background-color: #e9ecef;
   border-radius: 8px;
   padding: 0.25rem;
+  border: 1px solid #dee2e6;
 }
 .mode-button {
   flex: 1;
@@ -72,59 +67,142 @@
   transition: all 0.2s ease-in-out;
 }
 .mode-button.active {
-  background-color: #f1c40f; /* Amarillo del Figma */
+  background-color: #f1c40f; /* Amarillo solicitado */
   color: #2c3e50;
+  font-weight: bold;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.kg-title {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #333;
-  margin: 1rem 0 0;
-  padding-left: 0.25rem;
-}
-.kg-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-.kg-input-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #f1f3f6;
-  border-radius: 8px;
+
+/* --- NUEVO: Diseño Corporativo Minimalista --- */
+.registro-header {
+  border-left: 4px solid #052795;
   padding-left: 1rem;
-}
-.kg-input-row span {
-  font-weight: 500;
-  color: #333;
-}
-.kg-form-field {
-  width: 100px;
-}
-.kg-form-field .mat-mdc-form-field-flex {
-  background-color: #e0e0e0 !important;
-  border-radius: 8px !important;
-}
-.kg-form-field input {
-  text-align: center;
-  font-weight: 500;
+  margin: 1.5rem 0 2rem 0;
 }
 
-/* --- Botón de Envío (Común) --- */
-.submit-button {
-  background-color: #2c3e50;
-  color: white;
-  width: 100%;
-  padding: 1.75rem 0;
-  font-size: 1rem;
+.registro-title {
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-top: 1.5rem;
-  border-radius: 12px;
-  line-height: 0;
-  transition: background-color 0.2s;
-  cursor: pointer;
+  color: #1f2937;
+  margin: 0;
 }
-.submit-button:hover { background-color: #34495e; }
-.submit-button:disabled { background-color: #95a5a6; color: #ecf0f1; }
+
+.registro-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
+}
+
+.kg-section-corporate {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.corporate-input-group {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 1rem;
+}
+
+.corporate-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.corporate-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.corporate-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1.125rem;
+  color: #1f2937;
+  transition: border-color 0.2s ease;
+  background-color: white;
+}
+
+.corporate-input:focus {
+  outline: none;
+  border-color: #052795;
+  box-shadow: 0 0 0 3px rgba(5, 39, 149, 0.1);
+}
+
+.corporate-input::placeholder {
+  color: #9ca3af;
+}
+
+.corporate-unit {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  background-color: #f3f4f6;
+  padding: 0.75rem 1rem;
+  border-radius: 0.375rem;
+  min-width: 3rem;
+  text-align: center;
+}
+
+/* --- Contenedor para el botón --- */
+.submit-button-container {
+  display: flex;
+  justify-content: center; /* Centra el botón */
+  margin-top: 2rem;
+}
+
+/* --- Botón de Envío (Actualizado) --- */
+.submit-button {
+  background-color: #052795;
+  color: white;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  line-height: 1.5;
+  border: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-button:hover {
+  background-color: #041f6b;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.submit-button:disabled {
+  background-color: #9ca3af;
+  color: #e5e7eb;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* --- Responsive ajustes para diseño corporativo --- */
+@media (max-width: 768px) {
+  .registro-title {
+    font-size: 1.25rem;
+  }
+  
+  .corporate-input {
+    font-size: 1rem;
+    padding: 0.65rem 0.875rem;
+  }
+  
+  .corporate-unit {
+    padding: 0.65rem 0.875rem;
+    min-width: 2.5rem;
+  }
+}

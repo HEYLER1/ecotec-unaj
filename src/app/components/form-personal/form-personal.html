@@ -2,7 +2,7 @@
   <ng-container *ngIf="sedeActual">
 
     <div class="form-header">
-      <h2>Formulario Sede {{ sedeActual.nombre | uppercase }}</h2>
+      <h2>Formulario {{ sedeActual.nombre | uppercase }}</h2>
       <p>Ingrese los datos correctamente</p>
     </div>
 
@@ -10,8 +10,7 @@
     <form [formGroup]="staffForm" (ngSubmit)="onSubmit()" class="waste-actual-form">
         
       <mat-form-field appearance="fill" class="custom-form-field">
-        <mat-label>Pabellón</mat-label>
-        <mat-select formControlName="edificioId" disableRipple>
+        <mat-select formControlName="edificioId" disableRipple placeholder="Seleccionar Edificio">
           <mat-option *ngFor="let edificio of edificiosDeLaSede" [value]="edificio.id">
             {{ edificio.name }}
           </mat-option>
@@ -22,35 +21,93 @@
       <div class="mode-selector">
         <button type="button" class="mode-button" [class.active]="modoPersonalActivo === 'pilas'" (click)="setModoPersonal('pilas')">Pilas</button>
         <button type="button" class="mode-button" [class.active]="modoPersonalActivo === 'canastillas'" (click)="setModoPersonal('canastillas')">Canastillas</button>
-        <button type="button" class="mode-button" [class.active]="modoPersonalActivo === 'tacho'" (click)="setModoPersonal('tacho')">Papel-ofi</button>
+        <button type="button" class="mode-button" [class.active]="modoPersonalActivo === 'tacho'" (click)="setModoPersonal('tacho')">Papel Oficina</button>
       </div>
 
-      <h3 class="kg-title">Ingrese los datos en Kilogramos</h3>
-
-      <!-- Sección PILAS -->
-      <div class="kg-section" *ngIf="modoPersonalActivo === 'pilas'" formGroupName="pilas">
-        <div class="kg-input-row"><span>Plásticos</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="plasticosKg" placeholder="Kg"></mat-form-field></div>
-        <div class="kg-input-row"><span>Orgánicos</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="organicosKg" placeholder="Kg"></mat-form-field></div>
-        <div class="kg-input-row"><span>Vidrio</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="vidrioKg" placeholder="Kg"></mat-form-field></div>
-        <div class="kg-input-row"><span>Metales</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="metalesKg" placeholder="Kg"></mat-form-field></div>
-        <div class="kg-input-row"><span>Papel y Cartón</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="papelCartonKg" placeholder="Kg"></mat-form-field></div>
-        <div class="kg-input-row"><span>No aprovechables</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="noApropiablesKg" placeholder="Kg"></mat-form-field></div>
+      <!-- Título de Registro Corporativo -->
+      <div class="registro-header">
+        <h3 class="registro-title">Registro de Residuos</h3>
+        <p class="registro-subtitle">Ingrese la cantidad en kilogramos para cada categoría</p>
       </div>
 
-      <!-- Sección CANASTILLAS -->
-      <div class="kg-section" *ngIf="modoPersonalActivo === 'canastillas'" formGroupName="canastillas">
-        <div class="kg-input-row"><span>Plásticos</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="plasticosKg" placeholder="Kg"></mat-form-field></div>
+      <!-- Sección PILAS - Diseño Corporativo Minimalista -->
+      <div class="kg-section-corporate" *ngIf="modoPersonalActivo === 'pilas'" formGroupName="pilas">
+        <div class="corporate-input-group">
+          <label class="corporate-label">PLÁSTICOS</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="plasticosKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
+
+        <div class="corporate-input-group">
+          <label class="corporate-label">ORGÁNICOS</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="organicosKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
+
+        <div class="corporate-input-group">
+          <label class="corporate-label">VIDRIO</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="vidrioKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
+
+        <div class="corporate-input-group">
+          <label class="corporate-label">METALES</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="metalesKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
+
+        <div class="corporate-input-group">
+          <label class="corporate-label">PAPEL Y CARTÓN</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="papelCartonKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
+
+        <div class="corporate-input-group">
+          <label class="corporate-label">NO APROVECHABLES</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="noApropiablesKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Sección TACHO -->
-      <div class="kg-section" *ngIf="modoPersonalActivo === 'tacho'" formGroupName="tacho">
-        <div class="kg-input-row"><span>Papeles</span><mat-form-field appearance="fill" class="kg-form-field"><input matInput type="number" formControlName="papelKg" placeholder="Kg"></mat-form-field></div>
+      <!-- Sección CANASTILLAS - Diseño Corporativo Minimalista -->
+      <div class="kg-section-corporate" *ngIf="modoPersonalActivo === 'canastillas'" formGroupName="canastillas">
+        <div class="corporate-input-group">
+          <label class="corporate-label">PLÁSTICOS</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="plasticosKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección TACHO - Diseño Corporativo Minimalista -->
+      <div class="kg-section-corporate" *ngIf="modoPersonalActivo === 'tacho'" formGroupName="tacho">
+        <div class="corporate-input-group">
+          <label class="corporate-label">PAPELES</label>
+          <div class="corporate-input-wrapper">
+            <input type="number" formControlName="papelKg" placeholder="0.00" class="corporate-input" step="0.01" min="0">
+            <span class="corporate-unit">Kg</span>
+          </div>
+        </div>
       </div>
       
-      <!-- Botón de Envío (Común para ambos) -->
-      <button mat-raised-button type="submit" class="submit-button" [disabled]="staffForm.invalid">
-        Enviar
-      </button>
+      <div class="submit-button-container">
+        <button mat-raised-button type="submit" class="submit-button" [disabled]="staffForm.invalid">
+          ENVIAR REGISTRO
+        </button>
+      </div>
     </form>
   </ng-container>
 

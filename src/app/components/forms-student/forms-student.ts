@@ -32,9 +32,9 @@ export class FormEstudianteComponent implements OnInit {
 
   // --- CAMBIO: Estructura para manejar los tipos de residuo con el orden y colores oficiales ---
   residueTypes = [
-    { formControl: 'papelCarton', name: 'Papel y Cartón', color: '#3498db', textColor: '#FFFFFF' }, // Azul
+    { formControl: 'papelCarton', name: 'Papel y Cartón', color: '#1C5EFB', textColor: '#FFFFFF' }, // Azul
     { formControl: 'plasticos', name: 'Plásticos', color: '#FFFFFF', textColor: '#000000' },          // Blanco
-    { formControl: 'metales', name: 'Metales', color: '#f1c40f', textColor: '#000000' },              // Amarillo
+    { formControl: 'metales', name: 'Metales', color: '#FFEB00', textColor: '#000000' },              // Amarillo
     { formControl: 'organicos', name: 'Orgánicos', color: '#6F4E37', textColor: '#FFFFFF' },          // Marrón
     { formControl: 'vidrio', name: 'Vidrios', color: '#808080', textColor: '#FFFFFF' },                // Plomo
     { formControl: 'noAprovechables', name: 'No aprovechables', color: '#000000', textColor: '#FFFFFF' }  // Negro
@@ -48,18 +48,19 @@ export class FormEstudianteComponent implements OnInit {
   ];
 
   private allEdificios: Edificio[] = [
-    { id: 101, name: 'Edificio Sede Capilla Administrativo', sedeId: 1 },
-    { id: 201, name: 'Edificio APIAF', sedeId: 2 },
-    { id: 202, name: 'Edificio APIIA', sedeId: 2 },
-    { id: 203, name: 'Edificio APIER', sedeId: 2 },
-    { id: 204, name: 'Edificio EPITC', sedeId: 2 },
-    { id: 301, name: 'Aulas Generales', sedeId: 3 },
-    { id: 302, name: 'Laboratorios Generales', sedeId: 3 },
-    { id: 303, name: 'Edificio de Bienestar', sedeId: 3 },
-    { id: 304, name: 'Auditorio Magno', sedeId: 3 },
-    { id: 305, name: 'Campo Recreacional', sedeId: 3 },
-    { id: 306, name: 'Patio en General', sedeId: 3 },
-    { id: 401, name: 'Edificio Sede Santa Catalina', sedeId: 4 },
+    { id: 101, name: 'Edificio Sede Capilla Administrativo', sedeId: 11 },
+    { id: 201, name: 'Edificio EPIAF', sedeId: 21 },
+    { id: 202, name: 'Edificio EPIIA', sedeId: 21 },
+    { id: 203, name: 'Edificio EPIER', sedeId: 21 },
+    { id: 204, name: 'Edificio EPITC', sedeId: 21 },
+    { id: 205, name: 'Campo Recreacional', sedeId: 21 },
+    { id: 301, name: 'Aulas Generales', sedeId: 31 },
+    { id: 302, name: 'Laboratorios Generales', sedeId: 31 },
+    { id: 303, name: 'Edificio de Bienestar', sedeId: 31 },
+    { id: 304, name: 'Auditorio Magno', sedeId: 31 },
+    { id: 305, name: 'Campo Recreacional', sedeId: 31 },
+    { id: 306, name: 'Patio en General', sedeId: 31 },
+    { id: 401, name: 'Edificio Sede Santa Catalina', sedeId: 41 },
   ];
 
   sedeActual: Sede | undefined;

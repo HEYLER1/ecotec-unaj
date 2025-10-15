@@ -81,10 +81,21 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleSidebar(): void {
     this.sidebarVisible = !this.sidebarVisible;
+
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.sidebarVisible) {
+        document.body.classList.add('sidebar-open');
+      } else {
+        document.body.classList.remove('sidebar-open');
+      }
+    }
   }
 
   closeSidebar(): void {
     this.sidebarVisible = false;
+    if (isPlatformBrowser(this.platformId)) {
+      document.body.classList.remove('sidebar-open');
+    }
   }
 
   viewProfile(): void {
@@ -106,7 +117,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   // ✅ Getters simples
   get fullName(): string {
-    if (!this.userInfo) return 'Cargando...';
+    if (!this.userInfo) return '';
     return `${this.userInfo.nombre} ${this.userInfo.apellido}`;
   }
 

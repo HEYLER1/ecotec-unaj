@@ -1,0 +1,54 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background-color: #f8f9fa;
+}
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  color: #343a40;
+}
+
+.status-code {
+  font-size: 10rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #007bff; /* Un azul primario */
+  animation: float 4s ease-in-out infinite;
+}
+
+.message {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.home-button {
+  transition: transform 0.2s ease;
+}
+
+.home-button:hover {
+  transform: scale(1.05);
+}
+
+/* Animación de flotar */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
