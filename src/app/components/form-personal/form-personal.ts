@@ -42,18 +42,19 @@ export class FormPersonal implements OnInit {
   ];
 
   private allEdificios: Edificio[] = [
-    { id: 101, name: 'Edificio Sede Capilla Administrativo', sedeId: 1 },
-    { id: 201, name: 'Edificio APIAF', sedeId: 2 },
-    { id: 202, name: 'Edificio APIIA', sedeId: 2 },
-    { id: 203, name: 'Edificio APIER', sedeId: 2 },
-    { id: 204, name: 'Edificio EPITC', sedeId: 2 },
-    { id: 301, name: 'Aulas Generales', sedeId: 3 },
-    { id: 302, name: 'Laboratorios Generales', sedeId: 3 },
-    { id: 303, name: 'Edificio de Bienestar', sedeId: 3 },
-    { id: 304, name: 'Auditorio Magno', sedeId: 3 },
-    { id: 305, name: 'Campo Recreacional', sedeId: 3 },
-    { id: 306, name: 'Patio en General', sedeId: 3 },
-    { id: 401, name: 'Edificio Sede Santa Catalina', sedeId: 4 },
+    { id: 101, name: 'Edificio Sede Capilla Administrativo', sedeId: 11 },
+    { id: 201, name: 'Edificio EPIAF', sedeId: 21 },
+    { id: 202, name: 'Edificio EPIIA', sedeId: 21 },
+    { id: 203, name: 'Edificio EPIER', sedeId: 21 },
+    { id: 204, name: 'Edificio EPITC', sedeId: 21 },
+    { id: 205, name: 'Campo Recreacional', sedeId: 21 },
+    { id: 301, name: 'Aulas Generales', sedeId: 31 },
+    { id: 302, name: 'Laboratorios Generales', sedeId: 31 },
+    { id: 303, name: 'Edificio de Bienestar', sedeId: 31 },
+    { id: 304, name: 'Auditorio Magno', sedeId: 31 },
+    { id: 305, name: 'Campo Recreacional', sedeId: 31 },
+    { id: 306, name: 'Patio en General', sedeId: 31 },
+    { id: 401, name: 'Edificio Sede Santa Catalina', sedeId: 41 },
   ];
 
   sedeActual: Sede | undefined;

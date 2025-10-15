@@ -1,49 +1,130 @@
-<div class="profile-container">
-  <h1 class="page-title">Mi Perfil</h1>
-
-  <!-- 1. Se muestra mientras se cargan los datos -->
-  <div *ngIf="isLoading" class="loading-container">
-    <mat-spinner diameter="50"></mat-spinner>
-    <p>Cargando perfil...</p>
-  </div>
-
-  <!-- 2. Se muestra si, después de cargar, se encontraron datos del usuario -->
-  <mat-card *ngIf="!isLoading && userProfile" class="profile-card">
-    <mat-card-header>
-      <div mat-card-avatar class="profile-avatar">
+<div class="profile-wrapper" *ngIf="!isLoading && userProfile">
+  <!-- Sidebar izquierdo -->
+  <div class="sidebar">
+    <div class="profile-header">
+      <div class="avatar">
         <mat-icon>person</mat-icon>
       </div>
-      <mat-card-title>{{ fullName }}</mat-card-title>
-      <mat-card-subtitle>{{ roleName | uppercase }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-      <ul class="profile-details">
-        <!-- Email -->
-        <li>
-          <mat-icon>email</mat-icon>
-          <span>{{ userProfile.email }}</span>
-        </li>
-        
-        <!-- DNI -->
-        <li>
-          <mat-icon>badge</mat-icon>
-          <span>DNI: {{ userProfile.dni }}</span>
-        </li>
-        
-        <!-- Teléfono - Solo se muestra si existe -->
-        <li *ngIf="userProfile.telefono">
-          <mat-icon>phone</mat-icon>
-          <span>{{ phoneNumber }}</span>
-        </li>
-      </ul>
-    </mat-card-content>
-  </mat-card>
+      <h2 class="user-name">{{ fullName }}</h2>
+      <p class="user-id">{{ userId }}</p>
+    </div>
 
-  <!-- 3. Se muestra si, después de cargar, NO se encontraron datos -->
-  <div *ngIf="!isLoading && !userProfile" class="error-container">
-    <mat-icon>error_outline</mat-icon>
-    <h2>No se pudo cargar el perfil</h2>
-    <p>La información del usuario no se encontró. Por favor, intente iniciar sesión de nuevo.</p>
+    <nav class="sidebar-nav">
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'personal'"
+        (click)="setActiveSection('personal')">
+        <mat-icon>person</mat-icon>
+        <span>Datos Personales</span>
+      </button>
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'password'"
+        (click)="setActiveSection('password')">
+        <mat-icon>lock</mat-icon>
+        <span>Cambio de contraseña</span>
+      </button>
+    </nav>
   </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <!-- Sección: Datos Personales -->
+    <div *ngIf="activeSection === 'personal'" class="content-section">
+      <h1 class="section-title">Datos Personales</h1>
+
+      <div class="form-grid">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput [value]="fullName" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Correo</mat-label>
+          <input matInput [value]="userProfile.email" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>DNI</mat-label>
+          <input matInput [value]="userProfile.dni" readonly>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Número de Celular</mat-label>
+          <input matInput [value]="phoneNumber" readonly>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Sección: Cambio de contraseña -->
+    <div *ngIf="activeSection === 'password'" class="content-section">
+      <h1 class="section-title">Cambio de contraseña</h1>
+
+      <div class="form-grid password-form">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Contraseña Actual</mat-label>
+          <input 
+            matInput 
+            [type]="hideCurrentPassword ? 'password' : 'text'"
+            [(ngModel)]="currentPassword">
+          <button 
+            mat-icon-button 
+            matSuffix 
+            (click)="hideCurrentPassword = !hideCurrentPassword"
+            type="button">
+            <mat-icon>{{hideCurrentPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Nueva Contraseña</mat-label>
+          <input 
+            matInput 
+            [type]="hideNewPassword ? 'password' : 'text'"
+            [(ngModel)]="newPassword">
+          <button 
+            mat-icon-button 
+            matSuffix 
+            (click)="hideNewPassword = !hideNewPassword"
+            type="button">
+            <mat-icon>{{hideNewPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Repetir Contraseña</mat-label>
+          <input 
+            matInput 
+            [type]="hideRepeatPassword ? 'password' : 'text'"
+            [(ngModel)]="repeatPassword">
+          <button 
+            mat-icon-button 
+            matSuffix 
+            (click)="hideRepeatPassword = !hideRepeatPassword"
+            type="button">
+            <mat-icon>{{hideRepeatPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="button-container">
+        <button mat-raised-button class="save-button" (click)="savePasswordChanges()">
+          Guardar Cambios
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading state -->
+<div *ngIf="isLoading" class="loading-container">
+  <mat-spinner diameter="50"></mat-spinner>
+  <p>Cargando perfil...</p>
+</div>
+
+<!-- Error state -->
+<div *ngIf="!isLoading && !userProfile" class="error-container">
+  <mat-icon>error_outline</mat-icon>
+  <h2>No se pudo cargar el perfil</h2>
+  <p>La información del usuario no se encontró. Por favor, intente iniciar sesión de nuevo.</p>
 </div>

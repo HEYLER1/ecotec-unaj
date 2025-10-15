@@ -10,10 +10,7 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./components/login/login.component').then(c => c.LoginComponent)
   },
-  {
-    path: 'signIn',
-    loadComponent: () => import('./components/sign-in/sign-in.component').then(c => c.SignInComponent)
-  },
+
 
   {
     path: 'admin',
@@ -30,7 +27,7 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./components/sede-list/sede-list').then(c => c.SedeListComponent),
         canActivate: [roleGuard],
-        data: { roles: ['estudiante', 'personal'] }
+        data: { roles: ['estudiante', 'personal', 'admin'] }
       },
 
       // ✅ Desactiva prerendering para rutas con parámetros
@@ -73,9 +70,15 @@ export const routes: Routes = [
         loadComponent: () => import('./components/form-success/form-success').then(c => c.FormSuccess),
         canActivate: [roleGuard],
         data: { roles: ['estudiante', 'personal'] }
+      },
+      
+      // Ruta comodín para manejar 404 dentro de /admin
+      { 
+        path: '**', 
+        loadComponent: () => import('./components/not-found/not-found.component').then(c => c.NotFoundComponent) 
       }
     ]
   },
   
-  { path: '**', redirectTo: '/login' }
+  { path: '**', loadComponent: () => import('./components/not-found/not-found.component').then(c => c.NotFoundComponent) }
 ];

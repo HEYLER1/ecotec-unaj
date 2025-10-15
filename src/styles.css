@@ -9,3 +9,8 @@
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Ocultar paneles de Material (select, menu) cuando el sidebar está abierto */
+body.sidebar-open .cdk-overlay-pane {
+  display: none !important;
+}

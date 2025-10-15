@@ -56,16 +56,15 @@
                INGRESAR             
              </button>                          
              
-             <!-- Forgot Password -->             
-             <div class="text-center">               
-               <a href="#" class="forget-password-label">¿OLVIDASTE TU CONTRASEÑA?</a>             
-             </div>           
-           </form>                      
            
-           <!-- Loading Spinner -->           
-           <div *ngIf="loading" class="flex justify-center items-center py-12">             
-             <app-spinner></app-spinner>           
-           </div>         
+           </form>                      
+
+           <!-- Mensaje de estado del login -->
+           <div *ngIf="loginMessage" class="login-message-container">
+             <div class="login-message" [class.error]="isError">
+               {{ loginMessage }}
+             </div>
+           </div>
          </div>       
        </div>     
      </div>          

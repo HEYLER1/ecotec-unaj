@@ -554,3 +554,41 @@ html {
         height: 21vh;
     }
 }
+
+/* Estilos para el mensaje de login */
+.login-message-container {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.login-message {
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  background-color: #d1e7dd; /* Verde suave para éxito */
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.login-message.error {
+  background-color: #f8d7da; /* Rojo suave para error */
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+
+.login-message.error {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
