@@ -14,7 +14,6 @@ import { EdificioService } from '../../services/edificio.service';
 import { TipoRecoleccionService } from '../../services/tipo-recoleccion.service';
 import { RegistroPersonalService } from '../../services/registro-personal.service';
 
-// Imports de Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -54,7 +53,6 @@ interface CampoRecoleccion {
 })
 export class FormPersonal implements OnInit, OnDestroy {
 
-  // ===== PROPIEDADES =====
   modoPersonalActivo: ModoPersonal = 'pilas';
   sedeActual: Sede | null = null;
   edificiosDeLaSede: Edificio[] = [];
@@ -66,7 +64,6 @@ export class FormPersonal implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  // ✅ Definir campos por tipo de recolección
   private camposPorTipo: { [key: string]: CampoRecoleccion[] } = {
     'pilas': [
       { nombre: 'plasticosKg', label: 'Plásticos', formControlName: 'plasticosKg', tipo: 'number', min: 0, step: 0.01, placeholder: '0.00' },
@@ -84,7 +81,6 @@ export class FormPersonal implements OnInit, OnDestroy {
     ]
   };
 
-  // ===== CONSTRUCTOR =====
   constructor(
     private route: ActivatedRoute,
     public router: Router,
@@ -99,7 +95,6 @@ export class FormPersonal implements OnInit, OnDestroy {
     this.initializeForm();
   }
 
-  // ===== LIFECYCLE HOOKS =====
   ngOnInit(): void {
     this.cargarDatosIniciales();
   }
@@ -108,14 +103,12 @@ export class FormPersonal implements OnInit, OnDestroy {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
-  // ===== MÉTODOS PRIVADOS =====
   
   private cargarDatosIniciales(): void {
     const sedeIdParam = this.route.snapshot.paramMap.get('sedeId');
     
     if (!sedeIdParam) {
-      console.error('❌ No se encontró sedeId en la URL');
+      console.error('No se encontró sedeId en la URL');
       this.handleError('No se proporcionó un ID de sede válido');
       return;
     }
@@ -123,12 +116,12 @@ export class FormPersonal implements OnInit, OnDestroy {
     const id_sede = parseInt(sedeIdParam, 10);
     
     if (isNaN(id_sede)) {
-      console.error('❌ sedeId no es un número válido:', sedeIdParam);
+      console.error('sedeId no es un número válido:', sedeIdParam);
       this.handleError('ID de sede inválido');
       return;
     }
 
-    console.log('🔍 Cargando datos para sede ID:', id_sede);
+    console.log('Cargando datos para sede ID:', id_sede);
     this.cargarDatos(id_sede);
   }
 
@@ -153,24 +146,23 @@ export class FormPersonal implements OnInit, OnDestroy {
           this.edificiosDeLaSede = edificios;
           this.tiposRecoleccion = tiposRecoleccion;
           
-          console.log('✅ Sede cargada:', sede);
-          console.log('✅ Edificios cargados:', edificios.length);
-          console.log('✅ Tipos de recolección cargados:', tiposRecoleccion);
+          console.log('Sede cargada:', sede);
+          console.log('Edificios cargados:', edificios.length);
+          console.log('Tipos de recolección cargados:', tiposRecoleccion);
           
-          // ✅ AUTOSELECCIONAR PRIMER EDIFICIO SI SOLO HAY UNO
           if (edificios.length === 1) {
             this.staffForm.patchValue({
               edificioId: edificios[0].id_edificio
             });
-            console.log('✅ Edificio autoseleccionado:', edificios[0].nombre);
+            console.log('Edificio autoseleccionado:', edificios[0].nombre);
           }
           
           if (edificios.length === 0) {
-            console.warn('⚠️ No hay edificios disponibles para esta sede');
+            console.warn('No hay edificios disponibles para esta sede');
           }
         },
         error: (error) => {
-          console.error('❌ Error al cargar datos:', error);
+          console.error('Error al cargar datos:', error);
           this.handleError('No se pudieron cargar los datos de la sede');
         }
       });
@@ -179,7 +171,7 @@ export class FormPersonal implements OnInit, OnDestroy {
   private handleError(message: string): void {
     this.hasError = true;
     this.isLoading = false;
-    console.error('❌', message);
+    console.error(message);
   }
 
   private initializeForm(): void {
@@ -219,8 +211,8 @@ export class FormPersonal implements OnInit, OnDestroy {
       t.nombre.toLowerCase().includes(this.modoPersonalActivo.toLowerCase())
     );
     
-    console.log('🔍 Buscando tipo para modo:', this.modoPersonalActivo);
-    console.log('🔍 Tipo encontrado:', tipoEncontrado);
+    console.log('Buscando tipo para modo:', this.modoPersonalActivo);
+    console.log('Tipo encontrado:', tipoEncontrado);
     
     return tipoEncontrado?.id_tipo_recoleccion || 1;
   }
@@ -269,8 +261,6 @@ export class FormPersonal implements OnInit, OnDestroy {
     return null;
   }
 
-  // ===== MÉTODOS PÚBLICOS =====
-
   getCamposActuales(): CampoRecoleccion[] {
     return this.camposPorTipo[this.modoPersonalActivo] || [];
   }
@@ -296,12 +286,11 @@ export class FormPersonal implements OnInit, OnDestroy {
 
   setModoPersonal(modo: ModoPersonal): void {
     this.modoPersonalActivo = modo;
-    console.log('🔄 Modo cambiado a:', modo);
+    console.log('Modo cambiado a:', modo);
   }
 
   onSubmit(): void {
-    // ✅ DEBUGGING COMPLETO
-    console.log('📋 Estado del formulario:');
+    console.log('Estado del formulario:');
     console.log('  - Válido:', this.staffForm.valid);
     console.log('  - Valor:', this.staffForm.value);
     console.log('  - edificioId:', this.staffForm.get('edificioId')?.value);
@@ -309,13 +298,12 @@ export class FormPersonal implements OnInit, OnDestroy {
 
     if (this.staffForm.invalid) {
       this.staffForm.markAllAsTouched();
-      console.error('❌ Formulario inválido');
+      console.error('Formulario inválido');
       
-      // ✅ MOSTRAR ERRORES ESPECÍFICOS
       Object.keys(this.staffForm.controls).forEach(key => {
         const control = this.staffForm.get(key);
         if (control?.invalid) {
-          console.error(`❌ Campo inválido: ${key}`, control.errors);
+          console.error(`Campo inválido: ${key}`, control.errors);
         }
       });
       
@@ -323,10 +311,9 @@ export class FormPersonal implements OnInit, OnDestroy {
       return;
     }
 
-    // ✅ VERIFICAR TOKEN
     const token = this.getToken();
     if (!token) {
-      console.error('❌ No hay token');
+      console.error('No hay token');
       this.mostrarMensaje('Sesión expirada. Por favor inicie sesión nuevamente', 'error');
       setTimeout(() => {
         this.router.navigate(['/login']);
@@ -335,9 +322,10 @@ export class FormPersonal implements OnInit, OnDestroy {
     }
 
     const datosEnvio = this.construirDatosEnvio();
-    console.log('📤 Datos a enviar:', datosEnvio);
+    console.log('Datos a enviar:', datosEnvio);
 
     this.isSubmitting = true;
+    this.staffForm.disable();
 
     this.registroPersonalService.crearRegistro(datosEnvio)
       .pipe(
@@ -348,23 +336,19 @@ export class FormPersonal implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (response) => {
-          console.log('✅ Registro creado exitosamente:', response);
-          this.mostrarMensaje('✅ Registro guardado exitosamente', 'success');
+          console.log('Registro creado exitosamente:', response);
+          this.mostrarMensaje('Registro guardado exitosamente', 'success');
           
-          // ✅ LIMPIAR FORMULARIO
-          this.staffForm.reset();
-          this.staffForm.patchValue({ edificioId: '' });
-          
-          // ✅ REDIRIGIR DESPUÉS DE ÉXITO
           setTimeout(() => {
             this.router.navigate(['/admin/form-success']);
-          }, 1500);
+          }, 800);
         },
         error: (error) => {
-          console.error('❌ Error al crear registro:', error);
-          console.error('❌ Error completo:', JSON.stringify(error, null, 2));
+          console.error('Error al crear registro:', error);
+          console.error('Error completo:', JSON.stringify(error, null, 2));
           
-          // ✅ MANEJO ESPECÍFICO DE ERRORES
+          this.staffForm.enable();
+          
           if (error.status === 401) {
             this.mostrarMensaje('Sesión expirada. Redirigiendo al login...', 'error');
             setTimeout(() => {
@@ -387,8 +371,8 @@ export class FormPersonal implements OnInit, OnDestroy {
         }
       });
   }
-
+//falata corregir aqui no  es sedes es el form suceess
   volverASedes(): void {
-    this.router.navigate(['/admin/sedes']);
+    this.router.navigate(['/admin/form-success']);
   }
 }
