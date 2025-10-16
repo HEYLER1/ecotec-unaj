@@ -1,5 +1,6 @@
 export interface Edificio {
-  id: number;
-  name: string;
-  sedeId: number; // Para saber a qué sede pertenece
+  id_edificio: number;  // ✅ Correcto
+  nombre: string;       // ✅ Correcto
+  sede_id: number;
+  estado: number;
 }

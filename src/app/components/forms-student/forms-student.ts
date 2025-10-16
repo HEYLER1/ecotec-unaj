@@ -4,6 +4,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Sede } from '../../interfaces/sede';
 import { Edificio } from '../../interfaces/edificio';
+import { RegistroEstudianteService } from '../../services/registro-estudiante.service';
+import { RegistroEstudiante } from '../../interfaces/registro-estudiante';
 
 // Imports de Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-form-estudiante',
@@ -23,43 +27,48 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCheckboxModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './forms-student.html', 
   styleUrl: './forms-student.css'
 })
 export class FormEstudianteComponent implements OnInit {
 
-  // --- CAMBIO: Estructura para manejar los tipos de residuo con el orden y colores oficiales ---
+  loading = false;
+  errorMsg: string = '';
+
+  // Estructura para manejar los tipos de residuo con el orden y colores oficiales
   residueTypes = [
-    { formControl: 'papelCarton', name: 'Papel y Cartón', color: '#3498db', textColor: '#FFFFFF' }, // Azul
-    { formControl: 'plasticos', name: 'Plásticos', color: '#FFFFFF', textColor: '#000000' },          // Blanco
-    { formControl: 'metales', name: 'Metales', color: '#f1c40f', textColor: '#000000' },              // Amarillo
-    { formControl: 'organicos', name: 'Orgánicos', color: '#6F4E37', textColor: '#FFFFFF' },          // Marrón
-    { formControl: 'vidrio', name: 'Vidrios', color: '#808080', textColor: '#FFFFFF' },                // Plomo
-    { formControl: 'noAprovechables', name: 'No aprovechables', color: '#000000', textColor: '#FFFFFF' }  // Negro
+    { formControl: 'papelCarton', name: 'Papel y Cartón', color: '#3498db', textColor: '#FFFFFF' },
+    { formControl: 'plasticos', name: 'Plásticos', color: '#FFFFFF', textColor: '#000000' },
+    { formControl: 'metales', name: 'Metales', color: '#f1c40f', textColor: '#000000' },
+    { formControl: 'organicos', name: 'Orgánicos', color: '#6F4E37', textColor: '#FFFFFF' },
+    { formControl: 'vidrio', name: 'Vidrios', color: '#808080', textColor: '#FFFFFF' },
+    { formControl: 'noAprovechables', name: 'No aprovechables', color: '#000000', textColor: '#FFFFFF' }
   ];
   
   private allSedes: Sede[] = [
-    { id_sede: 11, nombre: 'SEDE CAPILLA - ADMINISTRATIVO', imagen: '', estado :1},
-    { id_sede: 21, nombre: 'SEDE AYABACAS', imagen: '', estado : 1 },
-    {id_sede: 31, nombre: 'SEDE CAPILLA - ACADÉMICO', imagen: '', estado: 1 },
-    { id_sede: 41, nombre: 'SEDE SANTA CATALINA', imagen: '', estado: 1 }
+    { id_sede: 1, nombre: 'SEDE CAPILLA - ADMINISTRATIVO', imagen: '', estado: 1},
+    { id_sede: 2, nombre: 'SEDE AYABACAS', imagen: '', estado: 1 },
+    { id_sede: 3, nombre: 'SEDE CAPILLA - ACADÉMICO', imagen: '', estado: 1 },
+    { id_sede: 4, nombre: 'SEDE SANTA CATALINA', imagen: '', estado: 1 }
   ];
 
   private allEdificios: Edificio[] = [
-    { id: 101, name: 'Edificio Sede Capilla Administrativo', sedeId: 1 },
-    { id: 201, name: 'Edificio APIAF', sedeId: 2 },
-    { id: 202, name: 'Edificio APIIA', sedeId: 2 },
-    { id: 203, name: 'Edificio APIER', sedeId: 2 },
-    { id: 204, name: 'Edificio EPITC', sedeId: 2 },
-    { id: 301, name: 'Aulas Generales', sedeId: 3 },
-    { id: 302, name: 'Laboratorios Generales', sedeId: 3 },
-    { id: 303, name: 'Edificio de Bienestar', sedeId: 3 },
-    { id: 304, name: 'Auditorio Magno', sedeId: 3 },
-    { id: 305, name: 'Campo Recreacional', sedeId: 3 },
-    { id: 306, name: 'Patio en General', sedeId: 3 },
-    { id: 401, name: 'Edificio Sede Santa Catalina', sedeId: 4 },
+    { id_edificio: 101, nombre: 'Edificio Sede Capilla Administrativo', sede_id: 1, estado: 1 },
+    { id_edificio: 201, nombre: 'Edificio APIAF', sede_id: 2, estado: 1 },
+    { id_edificio: 202, nombre: 'Edificio APIIA', sede_id: 2, estado: 1 },
+    { id_edificio: 203, nombre: 'Edificio APIER', sede_id: 2, estado: 1 },
+    { id_edificio: 204, nombre: 'Edificio EPITC', sede_id: 2, estado: 1 },
+    { id_edificio: 301, nombre: 'Aulas Generales', sede_id: 3, estado: 1 },
+    { id_edificio: 302, nombre: 'Laboratorios Generales', sede_id: 3, estado: 1 },
+    { id_edificio: 303, nombre: 'Edificio de Bienestar', sede_id: 3, estado: 1 },
+    { id_edificio: 304, nombre: 'Auditorio Magno', sede_id: 3, estado: 1 },
+    { id_edificio: 305, nombre: 'Campo Recreacional', sede_id: 3, estado: 1 },
+    { id_edificio: 306, nombre: 'Patio en General', sede_id: 3, estado: 1 },
+    { id_edificio: 401, nombre: 'Edificio Sede Santa Catalina', sede_id: 4, estado: 1 },
   ];
 
   sedeActual: Sede | undefined;
@@ -69,7 +78,8 @@ export class FormEstudianteComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private registroEstudianteService: RegistroEstudianteService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +88,7 @@ export class FormEstudianteComponent implements OnInit {
     if (sedeId) {
       const id = parseInt(sedeId, 10);
       this.sedeActual = this.allSedes.find(s => s.id_sede === id);
-      this.edificiosDeLaSede = this.allEdificios.filter(e => e.sedeId === id);
+      this.edificiosDeLaSede = this.allEdificios.filter(e => e.sede_id === id);
       this.initializeForm();
     }
   }
@@ -86,26 +96,56 @@ export class FormEstudianteComponent implements OnInit {
   private initializeForm(): void {
     this.studentForm = this.fb.group({
       edificioId: ['', Validators.required],
-      pilasCodigo: [''],
-      // Los nombres de los controles no cambian, solo su representación visual
-      plasticos: [null, Validators.required], 
-      organicos: [null, Validators.required],
-      vidrio: [null, Validators.required],
-      metales: [null, Validators.required],
-      papelCarton: [null, Validators.required],
-      noAprovechables: [null, Validators.required]
+      codigoPila: ['', Validators.required],
+      observaciones: [''],
+      // Checkboxes para verificación de residuos
+      papelCarton: [false, Validators.required], 
+      plasticos: [false, Validators.required],
+      metales: [false, Validators.required],
+      organicos: [false, Validators.required],
+      vidrio: [false, Validators.required],
+      noAprovechables: [false, Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.studentForm.invalid) {
       this.studentForm.markAllAsTouched();
-      console.error('Formulario de estudiante inválido');
+      this.errorMsg = 'Por favor completa todos los campos requeridos';
       return;
     }
-    
-    console.log('Formulario de estudiante enviado:', this.studentForm.value);
-    
-    this.router.navigate(['/admin/form-success']);
+
+    this.loading = true;
+    this.errorMsg = '';
+
+    const formValue = this.studentForm.value;
+
+    // Construir objeto según la interfaz RegistroEstudiante
+    const registro: RegistroEstudiante = {
+      edificio_id: parseInt(formValue.edificioId),
+      codigo_pila: formValue.codigoPila,
+      observaciones: formValue.observaciones || undefined,
+      verificacion: {
+        papel_carton: formValue.papelCarton === true,
+        plasticos: formValue.plasticos === true,
+        metales: formValue.metales === true,
+        organicos: formValue.organicos === true,
+        vidrio: formValue.vidrio === true,
+        no_aprovechables: formValue.noAprovechables === true
+      }
+    };
+
+    this.registroEstudianteService.createRegistro(registro).subscribe({
+      next: (data) => {
+        this.loading = false;
+        console.log('✅ Registro de estudiante creado exitosamente:', data);
+        this.router.navigate(['/admin/form-success']);
+      },
+      error: (error) => {
+        this.loading = false;
+        console.error('❌ Error al crear registro:', error);
+        this.errorMsg = error.error?.msg || 'Error al crear el registro';
+      }
+    });
   }
 }

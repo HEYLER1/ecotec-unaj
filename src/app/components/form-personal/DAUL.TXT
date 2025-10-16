@@ -1,0 +1,123 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Sede } from '../../interfaces/sede';
+import { Edificio } from '../../interfaces/edificio';
+
+// Imports de Angular Material
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-form-personal',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule
+  ],
+  templateUrl: './form-personal.html',
+  styleUrl: './form-personal.css'
+})
+export class FormPersonal implements OnInit {
+
+  modoPersonalActivo: 'pilas' | 'canastillas' | 'tacho' = 'pilas';
+
+  private allSedes: Sede[] = [
+    { id_sede: 1, nombre: 'SEDE CAPILLA - ADMINISTRATIVO', imagen: '', estado: 1},
+    { id_sede: 2, nombre: 'SEDE AYABACAS', imagen: '', estado: 1 },
+    { id_sede: 3, nombre: 'SEDE CAPILLA - ACADÉMICO', imagen: '', estado: 1 },
+    { id_sede: 4, nombre: 'SEDE SANTA CATALINA', imagen: '', estado: 1 }
+  ];
+
+  // ✅ Corregido: sede_id ahora coincide con id_sede (1, 2, 3, 4)
+  private allEdificios: Edificio[] = [
+    { id_edificio: 101, nombre: 'Edificio Sede Capilla Administrativo', sede_id: 1, estado: 1 },
+    { id_edificio: 201, nombre: 'Edificio APIAF', sede_id: 2, estado: 1 },
+    { id_edificio: 202, nombre: 'Edificio APIIA', sede_id: 2, estado: 1 },
+    { id_edificio: 203, nombre: 'Edificio APIER', sede_id: 2, estado: 1 },
+    { id_edificio: 204, nombre: 'Edificio EPITC', sede_id: 2, estado: 1 },
+    { id_edificio: 301, nombre: 'Aulas Generales', sede_id: 3, estado: 1 },
+    { id_edificio: 302, nombre: 'Laboratorios Generales', sede_id: 3, estado: 1 },
+    { id_edificio: 303, nombre: 'Edificio de Bienestar', sede_id: 3, estado: 1 },
+    { id_edificio: 304, nombre: 'Auditorio Magno', sede_id: 3, estado: 1 },
+    { id_edificio: 305, nombre: 'Campo Recreacional', sede_id: 3, estado: 1 },
+    { id_edificio: 306, nombre: 'Patio en General', sede_id: 3, estado: 1 },
+    { id_edificio: 401, nombre: 'Edificio Sede Santa Catalina', sede_id: 4, estado: 1 },
+  ];
+
+  sedeActual: Sede | undefined;
+  edificiosDeLaSede: Edificio[] = [];
+  staffForm!: FormGroup;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
+    const sedeId = this.route.snapshot.paramMap.get('sedeId');
+    console.log('🔍 sedeId de la URL:', sedeId);
+    
+    if (sedeId) {
+      const id = parseInt(sedeId, 10);
+      console.log('🔍 ID parseado:', id);
+      
+      this.sedeActual = this.allSedes.find(s => s.id_sede === id);
+      console.log('🔍 Sede encontrada:', this.sedeActual);
+      
+      this.edificiosDeLaSede = this.allEdificios.filter(e => e.sede_id === id);
+      console.log('🔍 Edificios encontrados:', this.edificiosDeLaSede);
+      
+      this.initializeForm();
+    } else {
+      console.error('❌ No se encontró sedeId en la URL');
+    }
+  }
+
+  private initializeForm(): void {
+    this.staffForm = this.fb.group({
+      edificioId: ['', Validators.required],
+      pilas: this.fb.group({
+        plasticosKg: [null], 
+        organicosKg: [null], 
+        vidrioKg: [null], 
+        metalesKg: [null], 
+        papelCartonKg: [null], 
+        noApropiablesKg: [null]
+      }),
+      canastillas: this.fb.group({ 
+        plasticosKg: [null] 
+      }),
+      tacho: this.fb.group({ 
+        papelKg: [null] 
+      })
+    });
+  }
+
+  setModoPersonal(modo: 'pilas' | 'canastillas' | 'tacho'): void {
+    this.modoPersonalActivo = modo;
+  }
+
+  onSubmit(): void {
+    if (this.staffForm.invalid) {
+      this.staffForm.markAllAsTouched();
+      console.error('❌ Formulario de personal inválido');
+      return;
+    }
+    
+    console.log('✅ Formulario de personal enviado:', this.staffForm.value);
+    
+    this.router.navigate(['/admin/form-success']);
+  }
+}

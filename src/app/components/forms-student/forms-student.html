@@ -11,8 +11,8 @@
       <mat-form-field appearance="fill" class="custom-form-field">
         <mat-label>Edificios</mat-label>
         <mat-select formControlName="edificioId" disableRipple>
-          <mat-option *ngFor="let edificio of edificiosDeLaSede" [value]="edificio.id">
-            {{ edificio.name }}
+          <mat-option *ngFor="let edificio of edificiosDeLaSede" [value]="edificio.id_edificio">
+            {{ edificio.nombre }}
           </mat-option>
         </mat-select>
       </mat-form-field>
