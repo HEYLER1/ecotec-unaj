@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add .)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfix: Mejora validación de roles con comparación case-insensitive y prevención de bucles\n\n- Añade normalización de roles a minúsculas para comparaciones robustas\n- Implementa verificación de rol nulo antes de navegar\n- Añade soporte para roles ''administrador'' y ''admin'' en navegación\n- Previene bucle infinito en role.guard al redirigir desde dashboard\n- Mejora mensajes de error y logs para debugging\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

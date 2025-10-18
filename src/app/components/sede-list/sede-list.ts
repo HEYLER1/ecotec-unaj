@@ -72,16 +72,28 @@ export class SedeListComponent implements OnInit {
 
     console.log("Rol detectado en localStorage:", userRole);
 
-    if (userRole === 'estudiante') {
+    if (!userRole) {
+      console.error('No se pudo determinar el rol del usuario o es nulo. No se puede navegar.');
+      return;
+    }
+
+    // Normalizar el rol a minúsculas para comparación case-insensitive
+    const userRoleLower = userRole.toLowerCase();
+
+    if (userRoleLower === 'estudiante') {
       console.log('Usuario es ESTUDIANTE. Navegando a form-estudiante...');
       this.router.navigate(['/admin/form-estudiante', id_sede]);
 
-    } else if (userRole === 'personal') {
+    } else if (userRoleLower === 'personal') {
       console.log('Usuario es PERSONAL. Navegando a form-personal...');
       this.router.navigate(['/admin/form-personal', id_sede]);
 
+    } else if (userRoleLower === 'administrador' || userRoleLower === 'admin') {
+      console.log('Usuario es ADMIN. Puede acceder a cualquier formulario. Navegando a form-personal...');
+      this.router.navigate(['/admin/form-personal', id_sede]);
+
     } else {
-      console.error('No se pudo determinar el rol del usuario o es nulo. No se puede navegar.');
+      console.error(`Rol "${userRole}" no reconocido. No se puede navegar.`);
     }
   }
 

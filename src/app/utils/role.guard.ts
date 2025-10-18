@@ -21,9 +21,9 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
 
   try {
     const user = JSON.parse(userStr);
-    
+
     const userPerfil = user.perfil?.nombre;
-    
+
     if (!userPerfil) {
       console.error('Usuario sin perfil asignado');
       router.navigate(['/login']);
@@ -32,24 +32,35 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
 
     console.log('Perfil del usuario:', userPerfil);
 
-
     const allowedRoles = route.data['roles'] as string[];
-    
+
     console.log('Perfiles permitidos en esta ruta:', allowedRoles);
 
-    // Verificar si el usuario tiene permiso
+    // Verificar si el usuario tiene permiso (comparación case-insensitive)
     if (allowedRoles && allowedRoles.length > 0) {
-      if (!allowedRoles.includes(userPerfil)) {
-        console.warn(` denegado. Perfil "${userPerfil}" no está en:`, allowedRoles);
-        // Redirigir a dashboard si no tiene acceso a esta ruta
-        router.navigate(['/admin/dashboard']);
+      // Convertir todo a minúsculas para comparar
+      const userPerfilLower = userPerfil.toLowerCase();
+      const allowedRolesLower = allowedRoles.map(role => role.toLowerCase());
+
+      if (!allowedRolesLower.includes(userPerfilLower)) {
+        console.warn(`Acceso denegado. Perfil "${userPerfil}" no está en:`, allowedRoles);
+
+        // Evitar bucle infinito: si ya estamos en dashboard, redirigir a login
+        const currentUrl = router.url;
+        if (currentUrl.includes('/admin/dashboard')) {
+          console.error('Usuario sin permisos para acceder al dashboard');
+          router.navigate(['/login']);
+        } else {
+          // Redirigir a dashboard si no tiene acceso a esta ruta
+          router.navigate(['/admin/dashboard']);
+        }
         return false;
       }
     }
-    
-    console.log('Acceso permitido');
+
+    console.log('✅ Acceso permitido');
     return true;
-    
+
   } catch (error) {
     console.error('Error al verificar perfil:', error);
     router.navigate(['/login']);
