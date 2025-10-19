@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subject, forkJoin } from 'rxjs';
+import { takeUntil, finalize } from 'rxjs/operators';
+
 import { Sede } from '../../interfaces/sede';
 import { Edificio } from '../../interfaces/edificio';
 import { RegistroEstudianteService } from '../../services/registro-estudiante.service';
+import { SedeService } from '../../services/sede.service';
+import { EdificioService } from '../../services/edificio.service';
 import { RegistroEstudiante } from '../../interfaces/registro-estudiante';
 
 // Imports de Angular Material
@@ -15,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-estudiante',
@@ -29,15 +35,25 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ],
   templateUrl: './forms-student.html', 
   styleUrl: './forms-student.css'
 })
-export class FormEstudianteComponent implements OnInit {
+export class FormEstudianteComponent implements OnInit, OnDestroy {
 
   loading = false;
+  isLoading = true;
+  isSubmitting = false;
+  hasError = false;
   errorMsg: string = '';
+
+  sedeActual: Sede | null = null;
+  edificiosDeLaSede: Edificio[] = [];
+  studentForm!: FormGroup;
+
+  private destroy$ = new Subject<void>();
 
   // Estructura para manejar los tipos de residuo con el orden y colores oficiales
   residueTypes = [
@@ -48,49 +64,97 @@ export class FormEstudianteComponent implements OnInit {
     { formControl: 'vidrio', name: 'Vidrios', color: '#808080', textColor: '#FFFFFF' },
     { formControl: 'noAprovechables', name: 'No aprovechables', color: '#000000', textColor: '#FFFFFF' }
   ];
-  
-  private allSedes: Sede[] = [
-    { id_sede: 1, nombre: 'SEDE CAPILLA - ADMINISTRATIVO', imagen: '', estado: 1},
-    { id_sede: 2, nombre: 'SEDE AYABACAS', imagen: '', estado: 1 },
-    { id_sede: 3, nombre: 'SEDE CAPILLA - ACADÉMICO', imagen: '', estado: 1 },
-    { id_sede: 4, nombre: 'SEDE SANTA CATALINA', imagen: '', estado: 1 }
-  ];
-
-  private allEdificios: Edificio[] = [
-    { id_edificio: 101, nombre: 'Edificio Sede Capilla Administrativo', sede_id: 1, estado: 1 },
-    { id_edificio: 201, nombre: 'Edificio APIAF', sede_id: 2, estado: 1 },
-    { id_edificio: 202, nombre: 'Edificio APIIA', sede_id: 2, estado: 1 },
-    { id_edificio: 203, nombre: 'Edificio APIER', sede_id: 2, estado: 1 },
-    { id_edificio: 204, nombre: 'Edificio EPITC', sede_id: 2, estado: 1 },
-    { id_edificio: 301, nombre: 'Aulas Generales', sede_id: 3, estado: 1 },
-    { id_edificio: 302, nombre: 'Laboratorios Generales', sede_id: 3, estado: 1 },
-    { id_edificio: 303, nombre: 'Edificio de Bienestar', sede_id: 3, estado: 1 },
-    { id_edificio: 304, nombre: 'Auditorio Magno', sede_id: 3, estado: 1 },
-    { id_edificio: 305, nombre: 'Campo Recreacional', sede_id: 3, estado: 1 },
-    { id_edificio: 306, nombre: 'Patio en General', sede_id: 3, estado: 1 },
-    { id_edificio: 401, nombre: 'Edificio Sede Santa Catalina', sede_id: 4, estado: 1 },
-  ];
-
-  sedeActual: Sede | undefined;
-  edificiosDeLaSede: Edificio[] = [];
-  studentForm!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private registroEstudianteService: RegistroEstudianteService
-  ) {}
+    private registroEstudianteService: RegistroEstudianteService,
+    private sedeService: SedeService,
+    private edificioService: EdificioService,
+    private snackBar: MatSnackBar
+  ) {
+    this.initializeForm();
+  }
 
   ngOnInit(): void {
-    const sedeId = this.route.snapshot.paramMap.get('sedeId');
+    this.cargarDatosIniciales();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private cargarDatosIniciales(): void {
+    const sedeIdParam = this.route.snapshot.paramMap.get('sedeId');
     
-    if (sedeId) {
-      const id = parseInt(sedeId, 10);
-      this.sedeActual = this.allSedes.find(s => s.id_sede === id);
-      this.edificiosDeLaSede = this.allEdificios.filter(e => e.sede_id === id);
-      this.initializeForm();
+    if (!sedeIdParam) {
+      console.error('❌ No se encontró sedeId en la URL');
+      this.handleError('No se proporcionó un ID de sede válido');
+      return;
     }
+
+    const id_sede = parseInt(sedeIdParam, 10);
+    
+    if (isNaN(id_sede)) {
+      console.error('❌ sedeId no es un número válido:', sedeIdParam);
+      this.handleError('ID de sede inválido');
+      return;
+    }
+
+    console.log('🔍 Cargando datos para sede ID:', id_sede);
+    this.cargarDatos(id_sede);
+  }
+
+  private cargarDatos(id_sede: number): void {
+    this.isLoading = true;
+    this.hasError = false;
+
+    forkJoin({
+      sede: this.sedeService.getSedeById(id_sede),
+      edificios: this.edificioService.getEdificiosBySede(id_sede)
+    })
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: ({ sede, edificios }) => {
+          this.sedeActual = sede;
+          this.edificiosDeLaSede = edificios;
+          
+          console.log('✅ Sede cargada:', sede);
+          console.log('✅ Edificios cargados:', edificios.length);
+          
+          // Auto-seleccionar si solo hay un edificio
+          if (edificios.length === 1) {
+            this.studentForm.patchValue({
+              edificioId: edificios[0].id_edificio
+            });
+            console.log('🏢 Edificio autoseleccionado:', edificios[0].nombre);
+          }
+          
+          if (edificios.length === 0) {
+            console.warn('⚠️ No hay edificios disponibles para esta sede');
+            this.mostrarMensaje('No hay edificios disponibles en esta sede', 'error');
+          }
+        },
+        error: (error) => {
+          console.error('❌ Error al cargar datos:', error);
+          this.handleError('No se pudieron cargar los datos de la sede');
+          this.mostrarMensaje('Error al cargar la información de la sede', 'error');
+        }
+      });
+  }
+
+  private handleError(message: string): void {
+    this.hasError = true;
+    this.isLoading = false;
+    this.errorMsg = message;
+    console.error('❌', message);
   }
 
   private initializeForm(): void {
@@ -109,14 +173,29 @@ export class FormEstudianteComponent implements OnInit {
   }
 
   onSubmit(): void {
+    console.log('📋 Estado del formulario:');
+    console.log('  - Válido:', this.studentForm.valid);
+    console.log('  - Valor:', this.studentForm.value);
+
     if (this.studentForm.invalid) {
       this.studentForm.markAllAsTouched();
       this.errorMsg = 'Por favor completa todos los campos requeridos';
+      
+      Object.keys(this.studentForm.controls).forEach(key => {
+        const control = this.studentForm.get(key);
+        if (control?.invalid) {
+          console.error(`❌ Campo inválido: ${key}`, control.errors);
+        }
+      });
+      
+      this.mostrarMensaje('Por favor completa todos los campos requeridos', 'error');
       return;
     }
 
     this.loading = true;
+    this.isSubmitting = true;
     this.errorMsg = '';
+    this.studentForm.disable();
 
     const formValue = this.studentForm.value;
 
@@ -135,17 +214,59 @@ export class FormEstudianteComponent implements OnInit {
       }
     };
 
-    this.registroEstudianteService.createRegistro(registro).subscribe({
-      next: (data) => {
-        this.loading = false;
-        console.log('✅ Registro de estudiante creado exitosamente:', data);
-        this.router.navigate(['/admin/form-success']);
-      },
-      error: (error) => {
-        this.loading = false;
-        console.error('❌ Error al crear registro:', error);
-        this.errorMsg = error.error?.msg || 'Error al crear el registro';
-      }
+    console.log('📤 Enviando datos:', registro);
+
+    this.registroEstudianteService.createRegistro(registro)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          this.loading = false;
+          this.isSubmitting = false;
+          this.studentForm.enable();
+        })
+      )
+      .subscribe({
+        next: (data) => {
+          console.log('✅ Registro de estudiante creado exitosamente:', data);
+          this.mostrarMensaje('Registro guardado exitosamente', 'success');
+          
+          setTimeout(() => {
+            this.router.navigate(['/admin/form-success']);
+          }, 800);
+        },
+        error: (error) => {
+          console.error('❌ Error al crear registro:', error);
+          
+          if (error.status === 401) {
+            this.errorMsg = 'Sesión expirada. Redirigiendo al login...';
+            this.mostrarMensaje(this.errorMsg, 'error');
+            setTimeout(() => {
+              this.router.navigate(['/login']);
+            }, 2000);
+          } else if (error.status === 403) {
+            this.errorMsg = error.error?.msg || 'No tienes permiso para realizar esta acción';
+            this.mostrarMensaje(this.errorMsg, 'error');
+          } else if (error.status === 400) {
+            this.errorMsg = error.error?.msg || 'Datos inválidos';
+            this.mostrarMensaje(this.errorMsg, 'error');
+          } else {
+            this.errorMsg = error.error?.msg || 'Error al crear el registro';
+            this.mostrarMensaje(this.errorMsg, 'error');
+          }
+        }
+      });
+  }
+
+  private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' = 'success'): void {
+    this.snackBar.open(mensaje, 'Cerrar', {
+      duration: 4000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: tipo === 'success' ? ['snackbar-success'] : ['snackbar-error']
     });
+  }
+
+  volverASedes(): void {
+    this.router.navigate(['/admin/sedes']);
   }
 }

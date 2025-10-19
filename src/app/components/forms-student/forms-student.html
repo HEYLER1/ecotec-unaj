@@ -1,6 +1,11 @@
 <div class="form-container">
-  <ng-container *ngIf="sedeActual">
+  <ng-container *ngIf="isLoading">
+    <div class="loading-container">
+      <p>⏳ Cargando datos del formulario...</p>
+    </div>
+  </ng-container>
 
+  <ng-container *ngIf="!isLoading && sedeActual">
     <div class="form-header">
       <h2>Formulario Sede {{ sedeActual.nombre | uppercase }}</h2>
       <p>Ingrese los datos correctamente</p>
@@ -11,15 +16,29 @@
       <mat-form-field appearance="fill" class="custom-form-field">
         <mat-label>Edificios</mat-label>
         <mat-select formControlName="edificioId" disableRipple>
+          <mat-option *ngIf="edificiosDeLaSede.length === 0" [value]="" disabled>
+            No hay edificios disponibles para esta sede
+          </mat-option>
           <mat-option *ngFor="let edificio of edificiosDeLaSede" [value]="edificio.id_edificio">
             {{ edificio.nombre }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="studentForm.get('edificioId')?.hasError('required')">
+          El edificio es requerido
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="custom-form-field">
-        <mat-label>Pilas</mat-label>
-        <input matInput formControlName="pilasCodigo" placeholder="Escriba el código...">
+        <mat-label>Código de Pila</mat-label>
+        <input matInput formControlName="codigoPila" placeholder="Escriba el código...">
+        <mat-error *ngIf="studentForm.get('codigoPila')?.hasError('required')">
+          El código de pila es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="custom-form-field">
+        <mat-label>Observaciones (opcional)</mat-label>
+        <textarea matInput formControlName="observaciones" rows="3" placeholder="Ingrese observaciones adicionales"></textarea>
       </mat-form-field>
       
       <div class="segregation-header">
@@ -30,7 +49,6 @@
         </div>
       </div>
 
-      <!-- --- CAMBIO: La lista de residuos ahora es dinámica y respeta el nuevo orden y colores --- -->
       <div class="residue-list">
         <div 
           *ngFor="let residue of residueTypes" 
@@ -40,19 +58,39 @@
           [style.border]="residue.color === '#FFFFFF' ? '1px solid #ccc' : 'none'">
           <span>{{ residue.name }}</span>
           <div class="checkbox-group">
-            <div class="custom-checkbox" [class.selected]="studentForm.get(residue.formControl)?.value === 'si'" (click)="studentForm.get(residue.formControl)?.setValue('si')"></div>
-            <div class="custom-checkbox" [class.selected]="studentForm.get(residue.formControl)?.value === 'no'" (click)="studentForm.get(residue.formControl)?.setValue('no')"></div>
+            <div class="custom-checkbox" 
+                 [class.selected]="studentForm.get(residue.formControl)?.value === true" 
+                 (click)="studentForm.get(residue.formControl)?.setValue(true)">
+            </div>
+            <div class="custom-checkbox" 
+                 [class.selected]="studentForm.get(residue.formControl)?.value === false" 
+                 (click)="studentForm.get(residue.formControl)?.setValue(false)">
+            </div>
           </div>
         </div>
       </div>
+
+      <div *ngIf="errorMsg" class="error-message">
+        {{ errorMsg }}
+      </div>
       
-      <button mat-raised-button type="submit" class="submit-button" [disabled]="studentForm.invalid">
-        Enviar
+      <button 
+        mat-raised-button 
+        type="submit" 
+        class="submit-button" 
+        [disabled]="studentForm.invalid || isSubmitting || edificiosDeLaSede.length === 0">
+        <span *ngIf="!isSubmitting">Enviar</span>
+        <span *ngIf="isSubmitting">Enviando...</span>
       </button>
     </form>
   </ng-container>
 
-  <ng-container *ngIf="!sedeActual">
-    <p>Cargando datos del formulario...</p>
+  <ng-container *ngIf="!isLoading && !sedeActual">
+    <div class="error-container">
+      <p>❌ No se pudo cargar la información de la sede.</p>
+      <button mat-raised-button (click)="volverASedes()">
+        Volver a Sedes
+      </button>
+    </div>
   </ng-container>
 </div>
